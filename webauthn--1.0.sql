@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION webauthn.base64_url_decode(text)
 RETURNS bytea
 IMMUTABLE
 LANGUAGE sql AS $$
-SELECT decode(rpad(replace(replace($1,'-','+'),'_','/'),length($1) + (4 - length($1) % 4) % 4, '='),'base64')
+SELECT decode(rpad(translate($1,'-_','+/'),length($1) + (4 - length($1) % 4) % 4, '='),'base64')
 $$;
 CREATE OR REPLACE FUNCTION webauthn.decode_cbor(cbor bytea)
 RETURNS TABLE (
@@ -122,12 +122,12 @@ IMMUTABLE
 LANGUAGE sql
 AS $$
 SELECT integer1||integer2
-FROM (VALUES(get_byte(asn1der,3))) AS Q1(len1)
-JOIN LATERAL (VALUES(get_byte(asn1der,5+len1))) AS Q2(len2) ON TRUE
-JOIN LATERAL (VALUES(substring(asn1der from 5 for len1))) AS Q3(integer1_zeropadded) ON TRUE
-JOIN LATERAL (VALUES(substring(integer1_zeropadded from length(integer1_zeropadded)-31 for 32))) AS Q4(integer1) ON TRUE
-JOIN LATERAL (VALUES(substring(asn1der from 5+len1+2 for len2))) AS Q5(integer2_zeropadded) ON TRUE
-JOIN LATERAL (VALUES(substring(integer2_zeropadded from length(integer2_zeropadded)-31 for 32))) AS Q6(integer2) ON TRUE
+FROM get_byte(asn1der,3) AS Q1(len1)
+JOIN LATERAL get_byte(asn1der,5+len1) AS Q2(len2) ON TRUE
+JOIN LATERAL substring(asn1der from 5 for len1) AS Q3(integer1_zeropadded) ON TRUE
+JOIN LATERAL substring(integer1_zeropadded from length(integer1_zeropadded)-31 for 32) AS Q4(integer1) ON TRUE
+JOIN LATERAL substring(asn1der from 5+len1+2 for len2) AS Q5(integer2_zeropadded) ON TRUE
+JOIN LATERAL substring(integer2_zeropadded from length(integer2_zeropadded)-31 for 32) AS Q6(integer2) ON TRUE
 WHERE get_byte(asn1der,0) = 48 /* 0x30 SEQUENCE */
 AND get_byte(asn1der,1) = length(asn1der)-2
 AND get_byte(asn1der,2) = 2 /* 0x02 INTEGER */
@@ -201,7 +201,11 @@ RETURNS text
 STABLE
 LANGUAGE sql
 AS $$
-SELECT token FROM ts_debug(current_setting('request.header.origin', TRUE)) WHERE alias IN ('host','asciiword')
+SELECT token FROM (
+  SELECT token, COUNT(*) OVER ()
+  FROM ts_debug(current_setting('request.header.origin', TRUE))
+  WHERE alias IN ('host','asciiword')
+) AS X WHERE COUNT = 1
 $$;
 CREATE TABLE webauthn.challenges (
 challenge_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
