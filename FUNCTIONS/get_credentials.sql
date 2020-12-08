@@ -1,11 +1,11 @@
-CREATE OR REPLACE FUNCTION webauthn.get_credentials(username text)
+CREATE OR REPLACE FUNCTION webauthn.get_credentials(username text, relaying_party text)
 RETURNS jsonb
 LANGUAGE sql
 AS $$
 WITH new_challenge AS (
   INSERT INTO webauthn.challenges (username, relaying_party)
-  VALUES (username, webauthn.relaying_party())
-  RETURNING challenge, relaying_party
+  VALUES (username, relaying_party)
+  RETURNING challenge
 )
 SELECT jsonb_build_object(
   'publicKey', jsonb_build_object(
@@ -21,12 +21,12 @@ SELECT jsonb_build_object(
     ORDER BY credentials.credential_id DESC),
     'timeout', 60000,
     'challenge', encode(new_challenge.challenge,'base64'),
-    'rpId', new_challenge.relaying_party
+    'rpId', relaying_party
   )
 )
 FROM new_challenge
 JOIN webauthn.challenges ON challenges.username       = get_credentials.username
-                        AND challenges.relaying_party = new_challenge.relaying_party
+                        AND challenges.relaying_party = get_credentials.relaying_party
 JOIN webauthn.credentials ON credentials.challenge_id = challenges.challenge_id
-GROUP BY new_challenge.challenge, new_challenge.relaying_party
+GROUP BY new_challenge.challenge, relaying_party
 $$;

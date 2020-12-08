@@ -1,11 +1,11 @@
-CREATE OR REPLACE FUNCTION webauthn.init_credential(username text)
+CREATE OR REPLACE FUNCTION webauthn.init_credential(username text, relaying_party text)
 RETURNS jsonb
 LANGUAGE sql
 AS $$
 WITH new_challenge AS (
   INSERT INTO webauthn.challenges (username, challenge, relaying_party)
-  VALUES (username, gen_random_bytes(32), webauthn.relaying_party())
-  RETURNING challenge, relaying_party
+  VALUES (username, gen_random_bytes(32), relaying_party)
+  RETURNING challenge
 )
 SELECT jsonb_build_object(
   'publicKey', jsonb_build_object(

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION webauthn.make_credential(username text, challenge text, credential_raw_id text, credential_type text, attestation_object text, client_data_json text)
+CREATE OR REPLACE FUNCTION webauthn.make_credential(username text, challenge text, credential_raw_id text, credential_type text, attestation_object text, client_data_json text, relaying_party text)
 RETURNS boolean
 LANGUAGE sql
 AS $$
@@ -7,7 +7,7 @@ consume_challenge AS (
   UPDATE webauthn.challenges SET
     consumed_at = now()
   WHERE challenges.username = make_credential.username
-  AND challenges.relaying_party = webauthn.relaying_party()
+  AND challenges.relaying_party = make_credential.relaying_party
   AND challenges.challenge = decode(make_credential.challenge,'base64')
   AND challenges.challenge = webauthn.base64_url_decode(webauthn.from_utf8(decode(client_data_json,'base64'))::jsonb->>'challenge')
   AND challenges.consumed_at IS NULL

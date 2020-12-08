@@ -19,7 +19,6 @@ SQL_SRC = \
   FUNCTIONS/from_utf8.sql \
   FUNCTIONS/parse_authenticator_data.sql \
   FUNCTIONS/parse_attestation_object.sql \
-  FUNCTIONS/relaying_party.sql \
   TABLES/challenges.sql \
   TABLES/credentials.sql \
   TABLES/assertions.sql \

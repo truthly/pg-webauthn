@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION webauthn.verify_assertion(credential_raw_id text, credential_type text, authenticator_data text, client_data_json text, signature text, user_handle text)
+CREATE OR REPLACE FUNCTION webauthn.verify_assertion(credential_raw_id text, credential_type text, authenticator_data text, client_data_json text, signature text, user_handle text, relaying_party text)
 RETURNS bigint
 LANGUAGE sql
 AS $$
@@ -16,7 +16,7 @@ consume_challenge AS (
   UPDATE webauthn.challenges SET
     consumed_at = now()
   WHERE challenges.challenge = webauthn.base64_url_decode(webauthn.from_utf8(decode(client_data_json,'base64'))::jsonb->>'challenge')
-  AND challenges.relaying_party = webauthn.relaying_party()
+  AND challenges.relaying_party = verify_assertion.relaying_party
   AND challenges.consumed_at IS NULL
   RETURNING challenge_id
 )
