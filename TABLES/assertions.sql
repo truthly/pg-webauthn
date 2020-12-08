@@ -11,7 +11,7 @@ extension_data boolean NOT NULL GENERATED ALWAYS AS ((webauthn.parse_authenticat
 sign_count bigint NOT NULL GENERATED ALWAYS AS ((webauthn.parse_authenticator_data(authenticator_data)).sign_count) STORED,
 client_data_json bytea NOT NULL,
 origin text NOT NULL GENERATED ALWAYS AS (webauthn.from_utf8(client_data_json)::jsonb->>'origin') STORED,
-cross_origin boolean GENERATED ALWAYS AS ((webauthn.from_utf8(client_data_json)::jsonb->>'crossOrigin')::boolean) STORED,
+cross_origin boolean GENERATED ALWAYS AS ((webauthn.from_utf8(client_data_json)::jsonb->'crossOrigin')::boolean) STORED,
 signature bytea NOT NULL,
 user_handle bytea NOT NULL,
 verified boolean NOT NULL,
