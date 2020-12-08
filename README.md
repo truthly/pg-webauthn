@@ -125,7 +125,7 @@ Returns `true` if successful.
 Via `psql` prompt:
 
 ```sql
-SELECT make_credential(
+SELECT webauthn.make_credential(
   username := 'test',
   challenge := '543amzXbkpA/g0DnFcvFvAybXBzwMg57fGed37YB8kM=',
   credential_raw_id := 'AUgfp5B5oOockGx4sAFOTlMQTDrIr7jk2GZ0s6dSEafmGZkdBLgFtN5L66QceA==',
@@ -165,7 +165,7 @@ where the only key, `publickey`, contains a [PublicKeyCredentialRequestOptions](
 Via `psql` prompt:
 
 ```sql
-SELECT get_credentials(username := 'test', relaying_party := 'localhost');
+SELECT webauthn.get_credentials(username := 'test', relaying_party := 'localhost');
 ```
 
 Via `PostgREST` API:
@@ -207,7 +207,7 @@ Returns `assertion_id` of type `bigint` if the assertion signature could be veri
 Via `psql` prompt:
 
 ```sql
-SELECT verify_assertion(
+SELECT webauthn.verify_assertion(
   credential_raw_id := 'AUgfp5B5oOockGx4sAFOTlMQTDrIr7jk2GZ0s6dSEafmGZkdBLgFtN5L66QceA==',
   credential_type := 'public-key',
   authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4/krrmihjLHmVzzuoMdl2MFX80ilw==',
