@@ -10,7 +10,7 @@ include $(PGXS)
 all: webauthn--1.0.sql
 
 SQL_SRC = \
-  FUNCTIONS/comaplain_header.sql \
+  FUNCTIONS/complain_header.sql \
   FUNCTIONS/base64_url_decode.sql \
   FUNCTIONS/decode_cbor.sql \
   FUNCTIONS/cbor_to_json.sql \
