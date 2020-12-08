@@ -4,13 +4,19 @@
 .error {
   background-color: #ffaaaa;
 }
+.pre {
+    white-space: pre;
+    font-family: monospace;
+    display: block;
+    unicode-bidi: embed
+}
 </style>
 </head>
 <body>
 <input placeholder="Username" type="text" id="username" autofocus required />
 <button id="sign_up">Sign up</button>
-<button id="sign_in" disabled>Sign in</button>
-<button id="sign_out" disabled>Sign out</button>
+<button id="sign_in">Sign in</button>
+<div class="pre" id="log"></div>
 <script type="text/javascript" src="base64.js"></script>
 <script>
   // All code in this file is based on: https://webauthn.io/dist/js/webauthn.js
@@ -19,18 +25,12 @@
     return Uint8Array.from(atob(value), c => c.charCodeAt(0));
   }
 
-  function error() {
-    document.getElementById("username").value = "";
-    document.getElementById("username").classList.add("error");
-    document.getElementById("username").focus();
-  }
-
   function sign_up() {
     if (document.getElementById("username").value === "") {
+      document.getElementById("log").innerHTML += "please enter a username\n";
       document.getElementById("username").focus();
       return;
     }
-    document.getElementById("username").classList.remove("error");
     fetch("/api/rpc/init_credential", {
       method: "POST",
       headers: {
@@ -52,12 +52,11 @@
         navigator.credentials.create(make_credential_options).then(function (new_credential) {
           make_credential(new_credential, make_credential_options.publicKey.challenge);
         }).catch(function (err) {
-          console.info(err);
+          document.getElementById("log").innerHTML += "not ok navigator.credentials.create\n";
         });
       });
     }).catch((error) => {
-      console.error('Error:', error);
-      error();
+      document.getElementById("log").innerHTML += "not ok init_credential\n";
     });
   }
 
@@ -81,12 +80,9 @@
       }).then(function(response) {
         response.json().then(function(status) {
           if (status) {
-            document.getElementById("sign_up").disabled = true;
-            document.getElementById("sign_in").disabled = false;
-            document.getElementById("sign_out").disabled = true;
+            document.getElementById("log").innerHTML += "ok make_credential\n";
           } else {
-            console.error("make_credential failed");
-            error();
+            document.getElementById("log").innerHTML += "not ok make_credential\n";
           }
         });
       });
@@ -94,10 +90,10 @@
 
   function sign_in() {
     if (document.getElementById("username").value === "") {
+      document.getElementById("log").innerHTML += "please enter a username\n";
       document.getElementById("username").focus();
       return;
     }
-    document.getElementById("username").classList.remove("error");
     fetch("/api/rpc/get_credentials", {
       method: "POST",
       headers: {
@@ -109,8 +105,7 @@
     }).then(function(response) {
       response.json().then(function (make_assertion_options) {
         if (make_assertion_options === null) {
-          console.error("no credentials found for username");
-          error();
+          document.getElementById("log").innerHTML += "no credentials found for username\n";
           return;
         }
         make_assertion_options.publicKey.challenge = buffer_decode(make_assertion_options.publicKey.challenge);
@@ -123,13 +118,11 @@
         .then(function (asserted_credential) {
           verify_assertion(asserted_credential);
         }).catch(function (err) {
-          console.error("verify_assertion failed", err);
-          error();
+          document.getElementById("log").innerHTML += "not ok navigator.credentials.get\n";
         });
       });
     }).catch(function (err) {
-      console.error("get_credentials failed", err);
-      error();
+      document.getElementById("log").innerHTML += "not ok get_credentials\n";
     });
   }
 
@@ -155,29 +148,16 @@
     }).then(function(response) {
       response.json().then(function (status) {
         if (status) {
-          document.getElementById("sign_up").disabled = true;
-          document.getElementById("sign_in").disabled = true;
-          document.getElementById("sign_out").disabled = false;
+          document.getElementById("log").innerHTML += "ok verify_assertion\n";
         } else {
-          console.error("verify_assertion failed");
-          error();
+          document.getElementById("log").innerHTML += "not ok verify_assertion\n";
         }
       });
     });
   }
 
-  function sign_out() {
-    document.getElementById("username").value = "";
-    document.getElementById("username").focus();
-    document.getElementById("username").classList.remove("error");
-    document.getElementById("sign_up").disabled = false;
-    document.getElementById("sign_in").disabled = true;
-    document.getElementById("sign_out").disabled = true;
-  }
-
   document.getElementById("sign_up").addEventListener("click", sign_up);
   document.getElementById("sign_in").addEventListener("click", sign_in);
-  document.getElementById("sign_out").addEventListener("click", sign_out);
 </script>
 </body>
 </html>
