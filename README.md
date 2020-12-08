@@ -1,4 +1,4 @@
-# `webauthn` - PostgreSQL WebAuthn Server
+# 🔐🐘 `webauthn`
 
 `webauthn` is a pure SQL PostgreSQL extension implementing the [WebAuthn protocol](https://en.wikipedia.org/wiki/WebAuthn)
 used by modern browsers for credential creation and assertion
