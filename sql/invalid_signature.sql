@@ -40,7 +40,7 @@ SELECT verify_assertion(
   credential_type := 'public-key',
   authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4/krrmihjLHmVzzuoMdl2MFX80ilw==',
   client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiVER5RnF4N2lwUS1Vb0otT3ZnWlVtV2ticHpPRlJtNk44WFY2bW93Sk9nUSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2UsIm90aGVyX2tleXNfY2FuX2JlX2FkZGVkX2hlcmUiOiJkbyBub3QgY29tcGFyZSBjbGllbnREYXRhSlNPTiBhZ2FpbnN0IGEgdGVtcGxhdGUuIFNlZSBodHRwczovL2dvby5nbC95YWJQZXgifQ==',
-  signature := 'MEUCIQD/y94itkRZrRcu5fQMplWcDorpCmpJ9YpnQvVgR/r5yAIgSy0nBbyWxFjH60R0u7ca27z4Ds/PiiycaYOeQxoB0nw=',
+  signature := 'this+is+valid+base64+of+expected+length+but+not+a+valid+signature++++++++++++++++++++++++++++++=',
   user_handle := 'dGVzdA=='
 );
 

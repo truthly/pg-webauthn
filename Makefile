@@ -1,6 +1,6 @@
 EXTENSION = webauthn
 DATA = webauthn--1.0.sql
-REGRESS = test
+REGRESS = valid_signature invalid_signature invalid_base64
 EXTRA_CLEAN = webauthn--1.0.sql
 
 PG_CONFIG = pg_config
