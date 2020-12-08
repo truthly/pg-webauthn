@@ -1,16 +1,16 @@
-# 🔐🐘 `webauthn`
+<h1 id="top">🔐🐘<code>webauthn</code></h1>
 
 1. [About](#about)
-2. [Dependencies](#dependencies)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Public API](#public-api)
-  1. [Sign-up functions](#sign-up)
-    1. [webauthn.init_credential()](#init-credential)
-    2. [webauthn.make_credential()](#make-credential)
-  2. [Sign-in functions](#sign-in)
-    1. [webauthn.get_credentials()](#get-credentials)
-    2. [webauthn.verify_assertion()](#verify-assertion)
+1. [Dependencies](#dependencies)
+1. [Installation](#installation)
+1. [Usage](#usage)
+1. [Public API](#public-api)
+    1. [Sign-up functions](#sign-up)
+        1. [webauthn.init_credential()](#init-credential)
+        1. [webauthn.make_credential()](#make-credential)
+    1. [Sign-in functions](#sign-in)
+        1. [webauthn.get_credentials()](#get-credentials)
+        1. [webauthn.verify_assertion()](#verify-assertion)
 
 <h2 id="about">1. About</h2>
 
