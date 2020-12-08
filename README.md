@@ -22,7 +22,7 @@ Install the `webauthn` extension with:
 
     $ git clone https://github.com/truthly/pg-webauthn.git
     $ cd pg-webauthn
-    # make
+    $ make
     $ make install
     $ make installcheck
 
