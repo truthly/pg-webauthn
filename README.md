@@ -201,7 +201,7 @@ Verifies the `signature` is valid for the credential matching `credential_raw_id
 
 Stores the input data and the result of the verify operation to the [webauthn.assertions](https://github.com/truthly/pg-webauthn/blob/master/TABLES/assertions.sql) table.
 
-Returns `assertion_id` of type `bigint` if the assertion signature could be verified.
+Returns `assertion_id` of type `bigint` if the assertion signature could be verified, and `null` otherwise.
 
 Via `psql` prompt:
 
