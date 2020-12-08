@@ -14,7 +14,6 @@ origin text NOT NULL GENERATED ALWAYS AS (webauthn.from_utf8(client_data_json)::
 cross_origin boolean GENERATED ALWAYS AS ((webauthn.from_utf8(client_data_json)::jsonb->'crossOrigin')::boolean) STORED,
 signature bytea NOT NULL,
 user_handle bytea NOT NULL,
-verified boolean NOT NULL,
 remote_ip inet DEFAULT current_setting('request.header.X-Forwarded-For', TRUE)::inet,
 created_at timestamptz NOT NULL DEFAULT now(),
 PRIMARY KEY (assertion_id),

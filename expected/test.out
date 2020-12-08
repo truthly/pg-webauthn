@@ -107,7 +107,7 @@ SELECT verify_assertion(
 );
  verify_assertion 
 ------------------
- t
+                1
 (1 row)
 
 ROLLBACK;

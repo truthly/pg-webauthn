@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION webauthn.verify_assertion(credential_raw_id text, credential_type text, authenticator_data text, client_data_json text, signature text, user_handle text)
-RETURNS boolean
+RETURNS bigint
 LANGUAGE sql
 AS $$
 WITH
@@ -20,24 +20,24 @@ consume_challenge AS (
   AND challenges.consumed_at IS NULL
   RETURNING challenge_id
 )
-INSERT INTO webauthn.assertions (credential_id, challenge_id, authenticator_data, client_data_json, signature, user_handle, verified)
+INSERT INTO webauthn.assertions (credential_id, challenge_id, authenticator_data, client_data_json, signature, user_handle)
 SELECT
   credentials.credential_id,
   consume_challenge.challenge_id,
   input.authenticator_data,
   input.client_data_json,
   input.signature,
-  input.user_handle,
-  COALESCE(ecdsa_verify(
-    public_key := credentials.public_key,
-    input_data := substring(input.authenticator_data,1,37) || digest(input.client_data_json,'sha256'),
-    signature := webauthn.decode_asn1_der_signature(input.signature),
-    hash_func := 'sha256',
-    curve_name := 'secp256r1'
-  ),FALSE)
+  input.user_handle
 FROM consume_challenge
 CROSS JOIN input
 JOIN webauthn.credentials ON credentials.credential_raw_id = input.credential_raw_id
                          AND credentials.credential_type = input.credential_type
-RETURNING assertions.verified
+WHERE ecdsa_verify(
+  public_key := credentials.public_key,
+  input_data := substring(input.authenticator_data,1,37) || digest(input.client_data_json,'sha256'),
+  signature := webauthn.decode_asn1_der_signature(input.signature),
+  hash_func := 'sha256',
+  curve_name := 'secp256r1'
+)
+RETURNING assertions.assertion_id
 $$;
