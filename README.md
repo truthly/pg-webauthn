@@ -28,8 +28,6 @@ or using Built-in sensors, as seen in the Chrome example below.
 
 [pguecc](https://github.com/ameensol/pg-ecdsa) for the ECDSA cryptographic [ecdsa_verify()](https://github.com/ameensol/pg-ecdsa#ecdsa_verifypublic_key-textbytea-input_data-bytea-signature-textbytea-hash_func-text-curve_name-text) function.
 
-[PostgREST](https://postgrest.org/en/v7.0.0/) to provide a web service API for browsers to use.
-
 <h2 id="installation">3. Installation</h2>
 
 Install the `webauthn` extension with:
@@ -62,7 +60,7 @@ The public API consists of two sign-up functions and two sign-in functions.
 
 **Note:** The example SQL and curl commands shown for each function
 is only provided to give an idea of what input/output to/from the functions look like.
-Copy/pasting of the commands will only work for the first function, *init_credential*.
+Copy/pasting of the commands will only work for the first function, [webauthn.init_credential()](#init-credential).
 
 If you want to manually test the other functions in the terminal, you have to override
 the random challenge values.
