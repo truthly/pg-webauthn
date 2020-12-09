@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION webauthn.make_credential(username text, challenge text, credential_raw_id text, credential_type text, attestation_object text, client_data_json text, relaying_party text)
-RETURNS boolean
+RETURNS bigint
 LANGUAGE sql
 AS $$
 WITH
@@ -21,5 +21,5 @@ SELECT
   decode(attestation_object,'base64'),
   decode(client_data_json,'base64')
 FROM consume_challenge
-RETURNING TRUE
+RETURNING credential_id
 $$;

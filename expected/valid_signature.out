@@ -54,7 +54,7 @@ SELECT make_credential(
 );
  make_credential 
 -----------------
- t
+               1
 (1 row)
 
 -- Replace random challenge with null to make test output predictable
