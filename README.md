@@ -22,7 +22,6 @@ or using Built-in sensors, as seen in the Chrome example below.
 ![Verify your identity](https://i.imgur.com/1KXVbTb.png)
 ![Touch ID](https://i.imgur.com/KPF6vEg.png)
 
-
 <h2 id="dependencies">2. Dependencies</h2>
 
 [pgcrypto](https://www.postgresql.org/docs/current/pgcrypto.html) for the [digest()](https://www.postgresql.org/docs/current/pgcrypto.html#id-1.11.7.34.6) and [gen_random_bytes()](https://www.postgresql.org/docs/current/pgcrypto.html#id-1.11.7.34.10) functions.
