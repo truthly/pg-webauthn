@@ -32,7 +32,7 @@ SELECT webauthn.verify_assertion(
   credential_type := 'public-key',
   authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX80ilw',
   client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiVER5RnF4N2lwUS1Vb0otT3ZnWlVtV2ticHpPRlJtNk44WFY2bW93Sk9nUSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2UsIm90aGVyX2tleXNfY2FuX2JlX2FkZGVkX2hlcmUiOiJkbyBub3QgY29tcGFyZSBjbGllbnREYXRhSlNPTiBhZ2FpbnN0IGEgdGVtcGxhdGUuIFNlZSBodHRwczovL2dvby5nbC95YWJQZXgifQ',
-  signature := 'MEUCIQD_y94itkRZrRcu5fQMplWcDorpCmpJ9YpnQvVgR_r5yAIgSy0nBbyWxFjH60R0u7ca27z4Ds_PiiycaYOeQxoB0nw',
+  signature := 'this_is_an_invalid_base64url_value_but_of_expected_length_and_not_a_valid_signature!!!!!!!!!!!!',
   user_handle := 'dGVzdA',
   relying_party_id := 'localhost'
 );

@@ -1,0 +1,30 @@
+BEGIN;
+CREATE EXTENSION webauthn CASCADE;
+NOTICE:  installing required extension "pguecc"
+NOTICE:  installing required extension "pgcrypto"
+SET search_path TO webauthn, public, pg_temp;
+SELECT webauthn.base64url_decode(webauthn.base64url_encode(x)) = x FROM gen_random_bytes(1) AS x;
+ ?column? 
+----------
+ t
+(1 row)
+
+SELECT webauthn.base64url_decode(webauthn.base64url_encode(x)) = x FROM gen_random_bytes(10) AS x;
+ ?column? 
+----------
+ t
+(1 row)
+
+SELECT webauthn.base64url_decode(webauthn.base64url_encode(x)) = x FROM gen_random_bytes(100) AS x;
+ ?column? 
+----------
+ t
+(1 row)
+
+SELECT webauthn.base64url_decode(webauthn.base64url_encode(x)) = x FROM gen_random_bytes(1000) AS x;
+ ?column? 
+----------
+ t
+(1 row)
+
+ROLLBACK;

@@ -1,25 +1,30 @@
-CREATE OR REPLACE FUNCTION webauthn.make_credential(username text, challenge text, credential_raw_id text, credential_type text, attestation_object text, client_data_json text, relaying_party text)
-RETURNS bigint
+CREATE OR REPLACE FUNCTION webauthn.make_credential(
+  credential_id text,
+  credential_type text,
+  attestation_object text,
+  client_data_json text,
+  relying_party_id text
+)
+RETURNS boolean
 LANGUAGE sql
 AS $$
 WITH
 consume_challenge AS (
-  UPDATE webauthn.challenges SET
+  UPDATE webauthn.credential_challenges SET
     consumed_at = now()
-  WHERE challenges.username = make_credential.username
-  AND challenges.relaying_party = make_credential.relaying_party
-  AND challenges.challenge = decode(make_credential.challenge,'base64')
-  AND challenges.challenge = webauthn.base64_url_decode(webauthn.from_utf8(decode(client_data_json,'base64'))::jsonb->>'challenge')
-  AND challenges.consumed_at IS NULL
-  RETURNING challenge_id
+  WHERE credential_challenges.relying_party_id = make_credential.relying_party_id
+  AND credential_challenges.challenge = webauthn.base64url_decode(webauthn.from_utf8(webauthn.base64url_decode(client_data_json))::jsonb->>'challenge')
+  AND credential_challenges.consumed_at IS NULL
+  AND credential_challenges.created_at + credential_challenges.timeout > now()
+  RETURNING challenge
 )
-INSERT INTO webauthn.credentials (challenge_id,credential_raw_id,credential_type,attestation_object,client_data_json)
+INSERT INTO webauthn.credentials (credential_id,challenge,credential_type,attestation_object,client_data_json)
 SELECT
-  consume_challenge.challenge_id,
-  decode(credential_raw_id,'base64'),
+  webauthn.base64url_decode(credential_id),
+  consume_challenge.challenge,
   credential_type,
-  decode(attestation_object,'base64'),
-  decode(client_data_json,'base64')
+  webauthn.base64url_decode(attestation_object),
+  webauthn.base64url_decode(client_data_json)
 FROM consume_challenge
-RETURNING credential_id
+RETURNING TRUE
 $$;

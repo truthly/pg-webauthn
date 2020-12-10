@@ -1,7 +1,6 @@
 CREATE TABLE webauthn.credentials (
-credential_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-challenge_id bigint NOT NULL REFERENCES webauthn.challenges,
-credential_raw_id bytea NOT NULL,
+credential_id bytea NOT NULL,
+challenge bytea NOT NULL REFERENCES webauthn.credential_challenges,
 credential_type text NOT NULL,
 attestation_object bytea NOT NULL,
 rp_id_hash bytea NOT NULL GENERATED ALWAYS AS ((webauthn.parse_attestation_object(attestation_object)).rp_id_hash) STORED,
@@ -17,10 +16,10 @@ origin text NOT NULL GENERATED ALWAYS AS (webauthn.from_utf8(client_data_json)::
 cross_origin boolean GENERATED ALWAYS AS ((webauthn.from_utf8(client_data_json)::jsonb->'crossOrigin')::boolean) STORED,
 created_at timestamptz NOT NULL DEFAULT now(),
 PRIMARY KEY (credential_id),
-UNIQUE (credential_raw_id),
-UNIQUE (challenge_id),
-CHECK (credential_raw_id = (webauthn.parse_attestation_object(attestation_object)).credential_id),
-CHECK (webauthn.from_utf8(client_data_json)::jsonb->>'type' = 'webauthn.create')
+UNIQUE (challenge),
+CHECK (credential_id = (webauthn.parse_attestation_object(attestation_object)).credential_id),
+CHECK (webauthn.from_utf8(client_data_json)::jsonb->>'type' = 'webauthn.create'),
+CHECK (credential_type = 'public-key')
 );
 
 SELECT pg_catalog.pg_extension_config_dump('credentials', '');

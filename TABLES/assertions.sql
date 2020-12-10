@@ -1,7 +1,7 @@
 CREATE TABLE webauthn.assertions (
-assertion_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
-challenge_id bigint NOT NULL REFERENCES webauthn.challenges,
-credential_id bigint NOT NULL REFERENCES webauthn.credentials,
+signature bytea NOT NULL,
+challenge bytea NOT NULL REFERENCES webauthn.assertion_challenges,
+credential_id bytea NOT NULL REFERENCES webauthn.credentials,
 authenticator_data bytea NOT NULL,
 rp_id_hash bytea NOT NULL GENERATED ALWAYS AS ((webauthn.parse_authenticator_data(authenticator_data)).rp_id_hash) STORED,
 user_presence boolean NOT NULL GENERATED ALWAYS AS ((webauthn.parse_authenticator_data(authenticator_data)).user_presence) STORED,
@@ -12,11 +12,9 @@ sign_count bigint NOT NULL GENERATED ALWAYS AS ((webauthn.parse_authenticator_da
 client_data_json bytea NOT NULL,
 origin text NOT NULL GENERATED ALWAYS AS (webauthn.from_utf8(client_data_json)::jsonb->>'origin') STORED,
 cross_origin boolean GENERATED ALWAYS AS ((webauthn.from_utf8(client_data_json)::jsonb->'crossOrigin')::boolean) STORED,
-signature bytea NOT NULL,
-user_handle bytea NOT NULL,
 created_at timestamptz NOT NULL DEFAULT now(),
-PRIMARY KEY (assertion_id),
-UNIQUE (challenge_id),
+PRIMARY KEY (signature),
+UNIQUE (challenge),
 CHECK (webauthn.from_utf8(client_data_json)::jsonb->>'type' = 'webauthn.get')
 );
 

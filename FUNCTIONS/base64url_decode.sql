@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION webauthn.base64_url_decode(text)
+CREATE OR REPLACE FUNCTION webauthn.base64url_decode(text)
 RETURNS bytea
 IMMUTABLE
 LANGUAGE sql AS $$

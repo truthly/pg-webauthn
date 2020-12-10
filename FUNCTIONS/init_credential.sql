@@ -1,24 +1,33 @@
-CREATE OR REPLACE FUNCTION webauthn.init_credential(username text, relaying_party text)
+CREATE OR REPLACE FUNCTION webauthn.init_credential(
+  challenge bytea,
+  relying_party_name text,
+  relying_party_id text,
+  user_name text,
+  user_id bytea,
+  user_display_name text,
+  timeout interval
+)
 RETURNS jsonb
 LANGUAGE sql
 AS $$
+-- https://www.w3.org/TR/webauthn-2/#dictionary-makecredentialoptions
 WITH new_challenge AS (
-  INSERT INTO webauthn.challenges (username, challenge, relaying_party)
-  VALUES (username, gen_random_bytes(32), relaying_party)
-  RETURNING challenge
+  INSERT INTO webauthn.credential_challenges (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout)
+  VALUES (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout)
+  RETURNING TRUE
 )
 SELECT jsonb_build_object(
   'publicKey', jsonb_build_object(
-    'challenge', encode(challenge,'base64'),
     'rp', jsonb_build_object(
-      'name', relaying_party,
-      'id', relaying_party
+      'name', relying_party_name,
+      'id', relying_party_id
     ),
     'user', jsonb_build_object(
-      'name', username,
-      'displayName', username,
-      'id', encode(username::bytea,'base64')
+      'name', user_name,
+      'displayName', user_display_name,
+      'id', webauthn.base64url_encode(user_id)
     ),
+    'challenge', webauthn.base64url_encode(challenge),
     'pubKeyCredParams', jsonb_build_array(
       jsonb_build_object(
         'type', 'public-key',
@@ -29,7 +38,7 @@ SELECT jsonb_build_object(
       'requireResidentKey', false,
       'userVerification', 'discouraged'
     ),
-    'timeout', 60000,
+    'timeout', (extract(epoch from timeout)*1000)::bigint, -- milliseconds
     'extensions', jsonb_build_object(
       'txAuthSimple', ''
     ),

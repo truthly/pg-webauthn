@@ -1,43 +1,52 @@
-CREATE OR REPLACE FUNCTION webauthn.verify_assertion(credential_raw_id text, credential_type text, authenticator_data text, client_data_json text, signature text, user_handle text, relaying_party text)
-RETURNS bigint
+CREATE OR REPLACE FUNCTION webauthn.verify_assertion(
+  credential_id text,
+  credential_type text,
+  authenticator_data text,
+  client_data_json text,
+  signature text,
+  user_handle text,
+  relying_party_id text
+)
+RETURNS boolean
 LANGUAGE sql
 AS $$
 WITH
-input AS (
+decoded_input AS (
   SELECT
-    decode(credential_raw_id,'base64') AS credential_raw_id,
+    webauthn.base64url_decode(credential_id) AS credential_id,
     credential_type,
-    decode(authenticator_data,'base64') AS authenticator_data,
-    decode(client_data_json,'base64') AS client_data_json,
-    decode(signature,'base64') AS signature,
-    decode(user_handle,'base64') AS user_handle
+    webauthn.base64url_decode(authenticator_data) AS authenticator_data,
+    webauthn.base64url_decode(client_data_json) AS client_data_json,
+    webauthn.base64url_decode(signature) AS signature,
+    webauthn.base64url_decode(user_handle) AS user_id
 ),
 consume_challenge AS (
-  UPDATE webauthn.challenges SET
+  UPDATE webauthn.assertion_challenges SET
     consumed_at = now()
-  WHERE challenges.challenge = webauthn.base64_url_decode(webauthn.from_utf8(decode(client_data_json,'base64'))::jsonb->>'challenge')
-  AND challenges.relaying_party = verify_assertion.relaying_party
-  AND challenges.consumed_at IS NULL
-  RETURNING challenge_id
+  WHERE assertion_challenges.challenge = webauthn.base64url_decode(webauthn.from_utf8(webauthn.base64url_decode(client_data_json))::jsonb->>'challenge')
+  AND assertion_challenges.relying_party_id = verify_assertion.relying_party_id
+  AND assertion_challenges.consumed_at IS NULL
+  RETURNING challenge
 )
-INSERT INTO webauthn.assertions (credential_id, challenge_id, authenticator_data, client_data_json, signature, user_handle)
+INSERT INTO webauthn.assertions (credential_id, challenge, authenticator_data, client_data_json, signature)
 SELECT
   credentials.credential_id,
-  consume_challenge.challenge_id,
-  input.authenticator_data,
-  input.client_data_json,
-  input.signature,
-  input.user_handle
+  consume_challenge.challenge,
+  decoded_input.authenticator_data,
+  decoded_input.client_data_json,
+  decoded_input.signature
 FROM consume_challenge
-CROSS JOIN input
-JOIN webauthn.credentials ON credentials.credential_raw_id = input.credential_raw_id
-                         AND credentials.credential_type = input.credential_type
+CROSS JOIN decoded_input
+JOIN webauthn.credentials ON credentials.credential_id = decoded_input.credential_id
+                         AND credentials.credential_type = decoded_input.credential_type
+JOIN webauthn.credential_challenges ON credential_challenges.challenge = credentials.challenge
+                                   AND credential_challenges.user_id = decoded_input.user_id
 WHERE ecdsa_verify(
   public_key := credentials.public_key,
-  input_data := substring(input.authenticator_data,1,37) || digest(input.client_data_json,'sha256'),
-  signature := webauthn.decode_asn1_der_signature(input.signature),
+  input_data := substring(decoded_input.authenticator_data,1,37) || digest(decoded_input.client_data_json,'sha256'),
+  signature := webauthn.decode_asn1_der_signature(decoded_input.signature),
   hash_func := 'sha256',
   curve_name := 'secp256r1'
 )
-RETURNING assertions.assertion_id
+RETURNING TRUE
 $$;
