@@ -51,9 +51,9 @@ SELECT * FROM webauthn.make_credential(
   client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiNTQzYW16WGJrcEFfZzBEbkZjdkZ2QXliWEJ6d01nNTdmR2VkMzdZQjhrTSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
   relying_party_id := 'localhost'
 );
- make_credential 
------------------
- t
+  user_id   
+------------
+ \x74657374
 (1 row)
 
 SELECT jsonb_pretty(webauthn.get_credentials(
@@ -83,7 +83,7 @@ SELECT jsonb_pretty(webauthn.get_credentials(
  }
 (1 row)
 
-SELECT webauthn.verify_assertion(
+SELECT * FROM webauthn.verify_assertion(
   credential_id := 'AUgfp5B5oOockGx4sAFOTlMQTDrIr7jk2GZ0s6dSEafmGZkdBLgFtN5L66QceA',
   credential_type := 'public-key',
   authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX80ilw',
@@ -92,9 +92,9 @@ SELECT webauthn.verify_assertion(
   user_handle := 'dGVzdA',
   relying_party_id := 'localhost'
 );
- verify_assertion 
-------------------
- t
+  user_id   
+------------
+ \x74657374
 (1 row)
 
 ROLLBACK;

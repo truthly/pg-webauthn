@@ -1,4 +1,5 @@
 CREATE OR REPLACE FUNCTION webauthn.verify_assertion(
+  OUT user_id bytea,
   credential_id text,
   credential_type text,
   authenticator_data text,
@@ -7,7 +8,7 @@ CREATE OR REPLACE FUNCTION webauthn.verify_assertion(
   user_handle text,
   relying_party_id text
 )
-RETURNS boolean
+RETURNS bytea
 LANGUAGE sql
 AS $$
 WITH
@@ -28,19 +29,19 @@ consume_challenge AS (
   AND assertion_challenges.consumed_at IS NULL
   RETURNING challenge
 )
-INSERT INTO webauthn.assertions (credential_id, challenge, authenticator_data, client_data_json, signature)
+INSERT INTO webauthn.assertions (signature, credential_id, challenge, authenticator_data, client_data_json, user_id)
 SELECT
+  decoded_input.signature,
   credentials.credential_id,
   consume_challenge.challenge,
   decoded_input.authenticator_data,
   decoded_input.client_data_json,
-  decoded_input.signature
+  credentials.user_id
 FROM consume_challenge
 CROSS JOIN decoded_input
 JOIN webauthn.credentials ON credentials.credential_id = decoded_input.credential_id
                          AND credentials.credential_type = decoded_input.credential_type
-JOIN webauthn.credential_challenges ON credential_challenges.challenge = credentials.challenge
-                                   AND credential_challenges.user_id = decoded_input.user_id
+                         AND credentials.user_id = decoded_input.user_id
 WHERE ecdsa_verify(
   public_key := credentials.public_key,
   input_data := substring(decoded_input.authenticator_data,1,37) || digest(decoded_input.client_data_json,'sha256'),
@@ -48,5 +49,5 @@ WHERE ecdsa_verify(
   hash_func := 'sha256',
   curve_name := 'secp256r1'
 )
-RETURNING TRUE
+RETURNING assertions.user_id
 $$;

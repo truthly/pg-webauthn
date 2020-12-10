@@ -27,7 +27,7 @@ SELECT jsonb_pretty(webauthn.get_credentials(
   timeout := '2 minutes'::interval
 ));
 
-SELECT webauthn.verify_assertion(
+SELECT * FROM webauthn.verify_assertion(
   credential_id := 'AUgfp5B5oOockGx4sAFOTlMQTDrIr7jk2GZ0s6dSEafmGZkdBLgFtN5L66QceA',
   credential_type := 'public-key',
   authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX80ilw',
