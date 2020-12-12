@@ -269,7 +269,7 @@ Input Parameter      | Type
 
 Source code: [FUNCTIONS/verify_assertion.sql](https://github.com/truthly/pg-webauthn/blob/master/FUNCTIONS/verify_assertion.sql#L1)
 
-Verifies the [signature] is valid for the credential matching [credential_id], [credential_type], [client_data_json]->>[challenge] and [relying_party_id].
+Verifies the [signature] is valid for the credential matching [client_data_json]->>[challenge], [credential_id], [credential_type] and [relying_party_id].
 
 The [user_handle] must also match the [user_id] for the credential, but not if it is `NULL` or empty string, in which case the check is skipped.
 
