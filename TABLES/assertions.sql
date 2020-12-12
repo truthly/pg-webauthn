@@ -1,3 +1,12 @@
+/*
+TODO: Inherit from webauthn.assertion_challenges
+to allow checking user_verification/user_verified
+via check constraint?
+
+See: https://www.postgresql.org/docs/13/tutorial-inheritance.html
+*/
+
+
 CREATE TABLE webauthn.assertions (
 signature bytea NOT NULL,
 challenge bytea NOT NULL REFERENCES webauthn.assertion_challenges,
@@ -22,7 +31,7 @@ CHECK (webauthn.base64url_decode(webauthn.from_utf8(client_data_json)::jsonb->>'
 
 SELECT pg_catalog.pg_extension_config_dump('assertions', '');
 
-COMMENT ON TABLE webauthn.assertions IS 'Used by webauthn.verify_assertion() to store the verified assertion.';
+COMMENT ON TABLE webauthn.assertions IS 'Used by webauthn.verify_assertion() to store verified assertions.';
 
 COMMENT ON COLUMN webauthn.assertions.signature IS 'https://www.w3.org/TR/webauthn-2/#assertion-signature';
 COMMENT ON COLUMN webauthn.assertions.challenge IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialrequestoptions-challenge';

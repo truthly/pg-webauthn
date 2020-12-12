@@ -15,7 +15,7 @@ CHECK ((tx_auth_generic_content_type IS NULL) = (tx_auth_generic_content IS NULL
 
 SELECT pg_catalog.pg_extension_config_dump('assertion_challenges', '');
 
-COMMENT ON TABLE webauthn.assertion_challenges IS 'Used by webauthn.get_credentials() to store the challenge, which is then consumed by webauthn.verify_assertion().';
+COMMENT ON TABLE webauthn.assertion_challenges IS 'Used by webauthn.get_credentials() to store assertion challenges.';
 
 COMMENT ON COLUMN webauthn.assertion_challenges.challenge IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-challenge';
 COMMENT ON COLUMN webauthn.assertion_challenges.relying_party_id IS 'https://www.w3.org/TR/webauthn-2/#relying-party-identifier';

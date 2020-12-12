@@ -20,7 +20,7 @@ SELECT pg_catalog.pg_extension_config_dump('credential_challenges', '');
 
 CREATE INDEX ON webauthn.credential_challenges(relying_party_id, user_name);
 
-COMMENT ON TABLE webauthn.credential_challenges IS 'Used by webauthn.init_credential() to store its input data, by webauthn.make_credential() to consume the challenge and by webauthn.make_credential() to find matching relying_party_id + user_name combinations.';
+COMMENT ON TABLE webauthn.credential_challenges IS 'Used by webauthn.init_credential() to store credential challenges.';
 
 COMMENT ON COLUMN webauthn.credential_challenges.challenge IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialrequestoptions-challenge';
 COMMENT ON COLUMN webauthn.credential_challenges.relying_party_name IS 'https://www.w3.org/TR/webauthn-2/#dictionary-rp-credential-params';

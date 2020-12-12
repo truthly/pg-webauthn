@@ -25,7 +25,7 @@ CHECK (webauthn.from_utf8(client_data_json)::jsonb->>'type' = 'webauthn.create')
 
 SELECT pg_catalog.pg_extension_config_dump('credentials', '');
 
-COMMENT ON TABLE webauthn.credentials IS 'Used by webauthn.make_credential() to store the credential created by the WebAuthn Authenticator during registration, and then used by webauthn.get_credentials() and webauthn.verify_assertion() during authentication.';
+COMMENT ON TABLE webauthn.credentials IS 'Used by webauthn.make_credential() to store credentials.';
 
 COMMENT ON COLUMN webauthn.credentials.credential_id IS 'https://www.w3.org/TR/webauthn-2/#credential-id';
 COMMENT ON COLUMN webauthn.credentials.challenge IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-challenge';
