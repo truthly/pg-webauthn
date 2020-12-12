@@ -1,9 +1,9 @@
 CREATE OR REPLACE FUNCTION webauthn.parse_authenticator_data(
 OUT rp_id_hash bytea,
-OUT user_presence boolean,
-OUT user_verification boolean,
-OUT attested_credential_data boolean,
-OUT extension_data boolean,
+OUT user_present boolean,
+OUT user_verified boolean,
+OUT attested_credential_data_included boolean,
+OUT extension_data_included boolean,
 OUT sign_count bigint,
 authenticator_data bytea
 )

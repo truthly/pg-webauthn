@@ -1,6 +1,6 @@
 EXTENSION = webauthn
 DATA = webauthn--1.0.sql
-REGRESS = valid_signature invalid_signature invalid_base64url base64url
+REGRESS = valid_signature invalid_signature invalid_base64url credential_user_verification_failure assertion_user_verification_failure base64url
 EXTRA_CLEAN = webauthn--1.0.sql
 
 PG_CONFIG = pg_config
@@ -10,7 +10,9 @@ include $(PGXS)
 all: webauthn--1.0.sql
 
 SQL_SRC = \
-  FUNCTIONS/complain_header.sql \
+  complain_header.sql \
+	ENUMS/credential_type.sql \
+	ENUMS/user_verification_requirement.sql \
   FUNCTIONS/base64url_decode.sql \
   FUNCTIONS/base64url_encode.sql \
   FUNCTIONS/decode_cbor.sql \

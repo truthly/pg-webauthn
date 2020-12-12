@@ -5,18 +5,20 @@ CREATE OR REPLACE FUNCTION webauthn.init_credential(
   user_name text,
   user_id bytea,
   user_display_name text,
-  timeout interval
+  timeout interval,
+  user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
+  tx_auth_simple text DEFAULT NULL,
+  tx_auth_generic_content_type text DEFAULT NULL,
+  tx_auth_generic_content bytea DEFAULT NULL
 )
 RETURNS jsonb
 LANGUAGE sql
 AS $$
--- https://www.w3.org/TR/webauthn-2/#dictionary-makecredentialoptions
-WITH new_challenge AS (
-  INSERT INTO webauthn.credential_challenges (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout)
-  VALUES (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout)
-  RETURNING TRUE
-)
-SELECT jsonb_build_object(
+INSERT INTO webauthn.credential_challenges
+       (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
+VALUES (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
+RETURNING 
+jsonb_build_object(
   'publicKey', jsonb_build_object(
     'rp', jsonb_build_object(
       'name', relying_party_name,
@@ -36,13 +38,33 @@ SELECT jsonb_build_object(
     ),
     'authenticatorSelection', jsonb_build_object(
       'requireResidentKey', false,
-      'userVerification', 'discouraged'
+      'userVerification', user_verification
     ),
-    'timeout', (extract(epoch from timeout)*1000)::bigint, -- milliseconds
-    'extensions', jsonb_build_object(
-      'txAuthSimple', ''
-    ),
+    'timeout', (extract(epoch from timeout)*1000)::bigint,
     'attestation', 'none'
+  ) ||
+  jsonb_strip_nulls(
+    jsonb_build_object(
+      'extensions',
+      NULLIF(
+        jsonb_strip_nulls(jsonb_build_object(
+          'txAuthSimple',
+          tx_auth_simple
+        )) ||
+        jsonb_strip_nulls(jsonb_build_object(
+            'txAuthGeneric',
+            NULLIF(jsonb_strip_nulls(
+              jsonb_build_object(
+                'contentType',
+                tx_auth_generic_content_type,
+                'content',
+                webauthn.base64url_encode(tx_auth_generic_content)
+              )
+            ), '{}')
+        )),
+        '{}'
+      )
+    )
   )
-) FROM new_challenge
+)
 $$;
