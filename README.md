@@ -4,7 +4,7 @@
 1. [Dependencies](#dependencies)
 1. [Installation](#installation)
 1. [Usage](#usage)
-1. [Public API](#public-api)
+1. [API](#api)
     1. [Sign-up functions](#sign-up)
         1. [webauthn.init_credential()]
         1. [webauthn.make_credential()]
@@ -71,9 +71,9 @@ Use with:
     NOTICE:  installing required extension "pgcrypto"
     CREATE EXTENSION;
 
-<h2 id="public-api">5. Public API</h2>
+<h2 id="api">5. API</h2>
 
-The public API consists of two sign-up functions and two sign-in functions.
+The API consists of two sign-up functions and two sign-in functions.
 
 <h3 id="sign-up">5.1. Sign-up functions</h3>
 
