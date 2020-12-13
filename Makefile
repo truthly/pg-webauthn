@@ -1,6 +1,6 @@
 EXTENSION = webauthn
 DATA = webauthn--1.0.sql
-REGRESS = valid_signature invalid_signature invalid_base64url credential_user_verification_failure assertion_user_verification_failure base64url ecdsa_verify
+REGRESS = valid_signature invalid_signature invalid_base64url credential_user_verification_failure assertion_user_verification_failure base64url ecdsa_verify make_credential_timeout verify_assertion_timeout
 EXTRA_CLEAN = webauthn--1.0.sql
 
 PG_CONFIG = pg_config
@@ -23,8 +23,13 @@ SQL_SRC = \
   FUNCTIONS/parse_authenticator_data.sql \
   FUNCTIONS/parse_attestation_object.sql \
   TABLES/credential_challenges.sql \
+	FUNCTIONS/credential_challenge_user_verification.sql \
+	FUNCTIONS/credential_challenge_expiration.sql \
   TABLES/credentials.sql \
   TABLES/assertion_challenges.sql \
+	FUNCTIONS/assertion_challenge_user_verification.sql \
+	FUNCTIONS/assertion_challenge_expiration.sql \
+	FUNCTIONS/credential_public_key.sql \
   TABLES/assertions.sql \
   FUNCTIONS/init_credential.sql \
   FUNCTIONS/make_credential.sql \

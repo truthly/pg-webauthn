@@ -4,24 +4,23 @@ CREATE OR REPLACE FUNCTION webauthn.make_credential(
   credential_type webauthn.credential_type,
   attestation_object text,
   client_data_json text,
-  relying_party_id text
+  relying_party_id text,
+  credential_at timestamptz DEFAULT now()
 )
 RETURNS bytea
 LANGUAGE sql
 AS $$
-INSERT INTO webauthn.credentials (credential_id, challenge, credential_type, attestation_object, client_data_json, user_id, user_verification)
+INSERT INTO webauthn.credentials (credential_id, challenge, credential_type, attestation_object, client_data_json, user_id, credential_at)
 SELECT
-  webauthn.base64url_decode(credential_id),
-  challenge,
-  credential_type,
-  webauthn.base64url_decode(attestation_object),
-  webauthn.base64url_decode(client_data_json),
-  user_id,
-  user_verification
+  webauthn.base64url_decode(make_credential.credential_id),
+  credential_challenges.challenge,
+  make_credential.credential_type,
+  webauthn.base64url_decode(make_credential.attestation_object),
+  webauthn.base64url_decode(make_credential.client_data_json),
+  credential_challenges.user_id,
+  make_credential.credential_at
 FROM webauthn.credential_challenges
 WHERE credential_challenges.relying_party_id = make_credential.relying_party_id
-AND challenge = webauthn.base64url_decode(webauthn.from_utf8(webauthn.base64url_decode(client_data_json))::jsonb->>'challenge')
-AND ((webauthn.parse_attestation_object(webauthn.base64url_decode(attestation_object))).user_verified OR credential_challenges.user_verification <> 'required')
-AND created_at + timeout > now()
+AND credential_challenges.challenge = webauthn.base64url_decode(webauthn.from_utf8(webauthn.base64url_decode(make_credential.client_data_json))::jsonb->>'challenge')
 RETURNING credentials.user_id
 $$;

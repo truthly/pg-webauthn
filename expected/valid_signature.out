@@ -93,6 +93,6 @@ SELECT * FROM webauthn.verify_assertion(
 
 /*
  * verify_assertion() will return the user_id for the credential indicating success
- * because the signature is valid
+ * because the signature is valid.
  */
 ROLLBACK;

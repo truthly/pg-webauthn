@@ -15,12 +15,14 @@ client_data_json bytea NOT NULL,
 origin text NOT NULL GENERATED ALWAYS AS (webauthn.from_utf8(client_data_json)::jsonb->>'origin') STORED,
 cross_origin boolean GENERATED ALWAYS AS ((webauthn.from_utf8(client_data_json)::jsonb->'crossOrigin')::boolean) STORED,
 user_id bytea NOT NULL,
-user_verification webauthn.user_verification_requirement NOT NULL,
-created_at timestamptz NOT NULL DEFAULT now(),
+credential_at timestamptz NOT NULL,
 PRIMARY KEY (credential_id),
 UNIQUE (challenge),
-CHECK (credential_id = (webauthn.parse_attestation_object(attestation_object)).credential_id),
-CHECK (webauthn.from_utf8(client_data_json)::jsonb->>'type' = 'webauthn.create')
+CONSTRAINT collected_client_data_type CHECK ('webauthn.create' = webauthn.from_utf8(client_data_json)::jsonb->>'type'),
+CONSTRAINT collected_client_data_challenge CHECK (challenge = webauthn.base64url_decode(webauthn.from_utf8(client_data_json)::jsonb->>'challenge')),
+CONSTRAINT attestation_object_credential_id CHECK (credential_id = (webauthn.parse_attestation_object(attestation_object)).credential_id),
+CONSTRAINT user_verification CHECK (user_verified OR credential_challenge_user_verification(challenge) <> 'required'),
+CONSTRAINT timeout_exceeded CHECK (credential_at < webauthn.credential_challenge_expiration(challenge))
 );
 
 SELECT pg_catalog.pg_extension_config_dump('credentials', '');
@@ -43,5 +45,4 @@ COMMENT ON COLUMN webauthn.credentials.client_data_json IS 'https://www.w3.org/T
 COMMENT ON COLUMN webauthn.credentials.origin IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-origin';
 COMMENT ON COLUMN webauthn.credentials.cross_origin IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-crossorigin';
 COMMENT ON COLUMN webauthn.credentials.user_id IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-id';
-COMMENT ON COLUMN webauthn.credentials.user_verification IS 'https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-userverification';
-COMMENT ON COLUMN webauthn.credentials.created_at IS 'Timestamp of when the credential was created by webauthn.make_credential()';
+COMMENT ON COLUMN webauthn.credentials.credential_at IS 'Timestamp of when the credential was created by webauthn.make_credential()';

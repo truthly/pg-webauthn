@@ -7,7 +7,7 @@ user_verification webauthn.user_verification_requirement NOT NULL,
 tx_auth_simple text,
 tx_auth_generic_content_type text,
 tx_auth_generic_content bytea,
-created_at timestamptz NOT NULL DEFAULT now(),
+challenge_at timestamptz NOT NULL,
 PRIMARY KEY (challenge),
 CHECK (timeout >= '0'::interval),
 CHECK ((tx_auth_generic_content_type IS NULL) = (tx_auth_generic_content IS NULL))
@@ -24,4 +24,4 @@ COMMENT ON COLUMN webauthn.assertion_challenges.timeout IS 'https://www.w3.org/T
 COMMENT ON COLUMN webauthn.assertion_challenges.tx_auth_simple IS 'https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions';
 COMMENT ON COLUMN webauthn.assertion_challenges.tx_auth_generic_content_type IS 'https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions';
 COMMENT ON COLUMN webauthn.assertion_challenges.tx_auth_generic_content IS 'https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions';
-COMMENT ON COLUMN webauthn.assertion_challenges.created_at IS 'Timestamp of when the challenge was created by webauthn.get_credentials()';
+COMMENT ON COLUMN webauthn.assertion_challenges.challenge_at IS 'Timestamp of when the challenge was created by webauthn.get_credentials()';

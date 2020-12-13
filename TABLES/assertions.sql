@@ -22,11 +22,21 @@ client_data_json bytea NOT NULL,
 origin text NOT NULL GENERATED ALWAYS AS (webauthn.from_utf8(client_data_json)::jsonb->>'origin') STORED,
 cross_origin boolean GENERATED ALWAYS AS ((webauthn.from_utf8(client_data_json)::jsonb->'crossOrigin')::boolean) STORED,
 user_id bytea NOT NULL,
-verified_at timestamptz NOT NULL DEFAULT now(),
+user_handle bytea,
+verified_at timestamptz NOT NULL,
 PRIMARY KEY (signature),
 UNIQUE (challenge),
-CHECK (webauthn.from_utf8(client_data_json)::jsonb->>'type' = 'webauthn.get'),
-CHECK (webauthn.base64url_decode(webauthn.from_utf8(client_data_json)::jsonb->>'challenge') = challenge)
+CONSTRAINT collected_client_data_type CHECK ('webauthn.get' = webauthn.from_utf8(client_data_json)::jsonb->>'type'),
+CONSTRAINT collected_client_data_challenge CHECK (challenge = webauthn.base64url_decode(webauthn.from_utf8(client_data_json)::jsonb->>'challenge')),
+CONSTRAINT user_handle CHECK (user_handle = user_id OR user_handle IS NULL),
+CONSTRAINT user_verification CHECK (user_verified OR assertion_challenge_user_verification(challenge) <> 'required'),
+CONSTRAINT timeout CHECK (verified_at < webauthn.assertion_challenge_expiration(challenge)),
+CONSTRAINT verify_signature CHECK (COALESCE(ecdsa_verify(
+  public_key := webauthn.credential_public_key(credential_id),
+  input_data := substring(authenticator_data,1,37) || digest(client_data_json,'sha256'),
+  signature := webauthn.decode_asn1_der_signature(signature),
+  hash_func := 'sha256',
+  curve_name := 'secp256r1'),FALSE))
 );
 
 SELECT pg_catalog.pg_extension_config_dump('assertions', '');
@@ -47,4 +57,5 @@ COMMENT ON COLUMN webauthn.assertions.client_data_json IS 'https://www.w3.org/TR
 COMMENT ON COLUMN webauthn.assertions.origin IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-origin';
 COMMENT ON COLUMN webauthn.assertions.cross_origin IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-crossorigin';
 COMMENT ON COLUMN webauthn.assertions.user_id IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-id';
+COMMENT ON COLUMN webauthn.assertions.user_handle IS 'https://www.w3.org/TR/webauthn-2/#dom-authenticatorassertionresponse-userhandle';
 COMMENT ON COLUMN webauthn.assertions.verified_at IS 'Timestamp of when the assertion was verified by webauthn.verify_assertion()';

@@ -90,6 +90,6 @@ ERROR:  invalid symbol "!" while decoding base64 sequence
 CONTEXT:  SQL function "verify_assertion" statement 1
 /*
  * verify_assertion() will throw error indicating failure
- * because of invalid base64
+ * because of invalid base64.
  */
 ROLLBACK;

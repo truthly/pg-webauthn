@@ -6,15 +6,16 @@ CREATE OR REPLACE FUNCTION webauthn.get_credentials(
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
   tx_auth_simple text DEFAULT NULL,
   tx_auth_generic_content_type text DEFAULT NULL,
-  tx_auth_generic_content bytea DEFAULT NULL
+  tx_auth_generic_content bytea DEFAULT NULL,
+  challenge_at timestamptz DEFAULT now()
 )
 RETURNS jsonb
 LANGUAGE sql
 AS $$
 WITH store_challenge AS (
   INSERT INTO webauthn.assertion_challenges
-         (challenge, relying_party_id, user_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
-  VALUES (challenge, relying_party_id, user_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
+         (challenge, relying_party_id, user_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content, challenge_at)
+  VALUES (challenge, relying_party_id, user_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content, challenge_at)
   RETURNING *
 )
 SELECT jsonb_build_object(

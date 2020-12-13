@@ -9,15 +9,16 @@ CREATE OR REPLACE FUNCTION webauthn.init_credential(
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
   tx_auth_simple text DEFAULT NULL,
   tx_auth_generic_content_type text DEFAULT NULL,
-  tx_auth_generic_content bytea DEFAULT NULL
+  tx_auth_generic_content bytea DEFAULT NULL,
+  challenge_at timestamptz DEFAULT now()
 )
 RETURNS jsonb
 LANGUAGE sql
 AS $$
 INSERT INTO webauthn.credential_challenges
-       (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
-VALUES (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
-RETURNING 
+       (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content, challenge_at)
+VALUES (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content, challenge_at)
+RETURNING
 jsonb_build_object(
   'publicKey', jsonb_build_object(
     'rp', jsonb_build_object(
