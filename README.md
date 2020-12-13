@@ -253,7 +253,7 @@ SELECT jsonb_pretty(webauthn.get_credentials(
 }
 ```
 
-<h3 id="verify-assertion"><code>webauthn.verify_assertion(...) → bigint</code></h3>
+<h3 id="verify-assertion"><code>webauthn.verify_assertion(...) → user_id bytea</code></h3>
 
 Input Parameter      | Type
 -------------------- | --------------------------
