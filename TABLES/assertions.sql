@@ -28,7 +28,7 @@ PRIMARY KEY (signature),
 UNIQUE (challenge),
 CONSTRAINT collected_client_data_type CHECK ('webauthn.get' = webauthn.from_utf8(client_data_json)::jsonb->>'type'),
 CONSTRAINT collected_client_data_challenge CHECK (challenge = webauthn.base64url_decode(webauthn.from_utf8(client_data_json)::jsonb->>'challenge')),
-CONSTRAINT user_handle CHECK (user_handle = user_id OR user_handle IS NULL),
+CONSTRAINT user_handle CHECK (user_handle = user_id),
 CONSTRAINT user_verification CHECK (user_verified OR assertion_challenge_user_verification(challenge) <> 'required'),
 CONSTRAINT timeout CHECK (verified_at < webauthn.assertion_challenge_expiration(challenge)),
 CONSTRAINT verify_signature CHECK (COALESCE(ecdsa_verify(
