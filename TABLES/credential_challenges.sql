@@ -26,8 +26,8 @@ COMMENT ON COLUMN webauthn.credential_challenges.challenge IS 'https://www.w3.or
 COMMENT ON COLUMN webauthn.credential_challenges.relying_party_name IS 'https://www.w3.org/TR/webauthn-2/#dictionary-rp-credential-params';
 COMMENT ON COLUMN webauthn.credential_challenges.relying_party_id IS 'https://www.w3.org/TR/webauthn-2/#relying-party-identifier';
 COMMENT ON COLUMN webauthn.credential_challenges.user_name IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-user';
-COMMENT ON COLUMN webauthn.credential_challenges.user_id IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-user';
-COMMENT ON COLUMN webauthn.credential_challenges.user_display_name IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-user';
+COMMENT ON COLUMN webauthn.credential_challenges.user_id IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-id';
+COMMENT ON COLUMN webauthn.credential_challenges.user_display_name IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-displayname';
 COMMENT ON COLUMN webauthn.credential_challenges.timeout IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-timeout';
 COMMENT ON COLUMN webauthn.credential_challenges.user_verification IS 'https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-userverification';
 COMMENT ON COLUMN webauthn.credential_challenges.tx_auth_simple IS 'https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions';
