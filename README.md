@@ -99,8 +99,8 @@ Input Parameter                | Type                                     | Defa
 [relying_party_name]: https://www.w3.org/TR/webauthn-2/#dictionary-rp-credential-params
 [relying_party_id]: https://www.w3.org/TR/webauthn-2/#relying-party-identifier
 [user_name]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-user
-[user_id]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-user
-[user_display_name]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-user
+[user_id]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-id
+[user_display_name]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-displayname
 [timeout]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-timeout
 [user_verification]: https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-userverification
 [tx_auth_simple]: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions
