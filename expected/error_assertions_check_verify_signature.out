@@ -85,17 +85,12 @@ SELECT * FROM webauthn.verify_assertion(
   credential_type := 'public-key',
   authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX9SYFg',
   client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoicFJkTlVHb2NDZzZjMmMxbDJ1RWlGWUt4ZUNUTG00eVI4REwwUEJ3SnpSOCIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  signature := 'MEUCIBLCsANiAuhOPX2_GkzCPHhYPAL2xL1Ms22xFHiLDHJfAiEA_Ru_HfC51p-PjvU9VVV5lRKk_swZ9vKMJedQyhnsc4w',
+  signature := 'this_is_a_valid_base64url_value_of_expected_length_but_not_a_valid_signature___________________',
   user_handle := 'szaMcxd5HFqYuBQozfPjUBKqceYJDQSTCzkASerXwoIGTuJOncchm21yfMharU3MDzE0-OYsbIlqSKwIqsPbGw',
   relying_party_id := 'localhost',
-  verified_at := '2020-12-13 16:37:21+01'
+  verified_at := '2020-12-13 16:35:30+01'
 );
-ERROR:  new row for relation "assertions" violates check constraint "timeout"
-DETAIL:  Failing row contains (\x3045022012c2b0036202e84e3d7dbf1a4cc23c78583c02f6c4bd4cb36db114..., \xa5174d506a1c0a0e9cd9cd65dae1221582b17824cb9b8c91f032f43c1c09cd..., \x0128958e0a8a260bd26b08d1bff6e3151ea5f6e3a0a4b27d8da65b1a4c72b4..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., t, t, f, f, 1607768086, \x7b2274797065223a22776562617574686e2e676574222c226368616c6c656e..., http://localhost, f, \xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c2..., \xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c2..., Sun Dec 13 07:37:21 2020 PST).
+ERROR:  new row for relation "assertions" violates check constraint "verified_signature"
+DETAIL:  Failing row contains (\xb618acfe2b3f6bfbda96277f6dab1eeb8bab97fbda96e7bfa1ffdec6979cb5..., \xa5174d506a1c0a0e9cd9cd65dae1221582b17824cb9b8c91f032f43c1c09cd..., \x0128958e0a8a260bd26b08d1bff6e3151ea5f6e3a0a4b27d8da65b1a4c72b4..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., t, t, f, f, 1607768086, \x7b2274797065223a22776562617574686e2e676574222c226368616c6c656e..., http://localhost, f, \xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c2..., \xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c2..., Sun Dec 13 07:35:30 2020 PST).
 CONTEXT:  SQL function "verify_assertion" statement 1
-/*
- * verify_assertion() will throw:
- * ERROR:  new row for relation "assertions" violates check constraint "timeout_exceeded"
- * because the timeout was exceeded.
- */
 ROLLBACK;

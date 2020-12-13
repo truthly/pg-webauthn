@@ -43,11 +43,4 @@ SELECT * FROM webauthn.verify_assertion(
   verified_at := '2020-12-13 16:35:30+01'
 );
 
-/*
- * verify_assertion() MUST throw:
- * ERROR:  new row for relation "assertions" violates check constraint "user_verification"
- * because user_verification is 'required'
- * but the user_verified flag in the authenticator_data is FALSE.
- */
-
 ROLLBACK;

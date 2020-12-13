@@ -1,4 +1,3 @@
-# webauthn extension
 comment = 'WebAuth server'
 default_version = '1.0'
 requires = 'pguecc,pgcrypto'

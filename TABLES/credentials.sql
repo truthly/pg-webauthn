@@ -18,11 +18,11 @@ user_id bytea NOT NULL,
 credential_at timestamptz NOT NULL,
 PRIMARY KEY (credential_id),
 UNIQUE (challenge),
-CONSTRAINT collected_client_data_type CHECK ('webauthn.create' = webauthn.from_utf8(client_data_json)::jsonb->>'type'),
-CONSTRAINT collected_client_data_challenge CHECK (challenge = webauthn.base64url_decode(webauthn.from_utf8(client_data_json)::jsonb->>'challenge')),
+CONSTRAINT client_data_json_type CHECK ('webauthn.create' = webauthn.from_utf8(client_data_json)::jsonb->>'type'),
+CONSTRAINT client_data_json_challenge CHECK (challenge = webauthn.base64url_decode(webauthn.from_utf8(client_data_json)::jsonb->>'challenge')),
 CONSTRAINT attestation_object_credential_id CHECK (credential_id = (webauthn.parse_attestation_object(attestation_object)).credential_id),
-CONSTRAINT user_verification CHECK (user_verified OR credential_challenge_user_verification(challenge) <> 'required'),
-CONSTRAINT timeout_exceeded CHECK (credential_at < webauthn.credential_challenge_expiration(challenge))
+CONSTRAINT user_verified_or_not_required CHECK (user_verified OR credential_challenge_user_verification(challenge) <> 'required'),
+CONSTRAINT credential_before_timeout CHECK (credential_at < webauthn.credential_challenge_expiration(challenge))
 );
 
 SELECT pg_catalog.pg_extension_config_dump('credentials', '');

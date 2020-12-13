@@ -41,10 +41,4 @@ SELECT * FROM webauthn.verify_assertion(
   verified_at := '2020-12-13 16:37:21+01'
 );
 
-/*
- * verify_assertion() will throw:
- * ERROR:  new row for relation "assertions" violates check constraint "timeout_exceeded"
- * because the timeout was exceeded.
- */
-
 ROLLBACK;

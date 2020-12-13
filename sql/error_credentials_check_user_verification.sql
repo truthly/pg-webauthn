@@ -23,11 +23,4 @@ SELECT * FROM webauthn.make_credential(
   credential_at := '2020-12-13 16:35:10+01'
 );
 
-/*
- * make_credential() MUST throw:
- * ERROR:  new row for relation "credentials" violates check constraint "user_verification"
- * because user_verification is 'required'
- * but the user_verified flag in the attestation_object is FALSE.
- */
-
 ROLLBACK;

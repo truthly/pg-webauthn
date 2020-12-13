@@ -13,7 +13,7 @@ tx_auth_generic_content bytea,
 challenge_at timestamptz NOT NULL,
 PRIMARY KEY (challenge),
 CHECK (timeout >= '0'::interval),
-CHECK ((tx_auth_generic_content_type IS NULL) = (tx_auth_generic_content IS NULL))
+CONSTRAINT tx_auth_generic_content_both_set_or_none CHECK ((tx_auth_generic_content_type IS NULL) = (tx_auth_generic_content IS NULL))
 );
 
 SELECT pg_catalog.pg_extension_config_dump('credential_challenges', '');

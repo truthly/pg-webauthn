@@ -1,6 +1,16 @@
 EXTENSION = webauthn
 DATA = webauthn--1.0.sql
-REGRESS = valid_signature invalid_signature invalid_base64url credential_user_verification_failure assertion_user_verification_failure base64url ecdsa_verify make_credential_timeout verify_assertion_timeout
+REGRESS = ok \
+	ok_base64url \
+	ok_ecdsa_verify \
+	error_assertions_check_timeout_exceeded \
+	error_assertions_check_user_verification \
+	error_assertions_check_verify_signature \
+	error_credentials_check_timeout_exceeded \
+	error_credentials_check_user_verification \
+	error_invalid_base64 \
+	error_replay_attack
+
 EXTRA_CLEAN = webauthn--1.0.sql
 
 PG_CONFIG = pg_config
