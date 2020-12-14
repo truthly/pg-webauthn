@@ -1,3 +1,19 @@
+--
+-- In this test we will simulate different "replay attacks",
+-- by reusing values that are guaranteed to be unique
+-- thanks to primary keys and unique constraints on columns.
+--
+-- We will use the SAVEPOINT ... ROLLBACK TO PostgreSQL feature,
+-- to let errors happen that we want to test for,
+-- but to roll back to the state before the error,
+-- allowing the rest of the test to continue
+-- which depends on the data produced so far.
+-- Otherwise we would have to test all steps from start
+-- in separate test files, which would be unnecessarily tedious.
+--
+-- See: https://www.postgresql.org/docs/current/sql-rollback-to.html
+--
+
 BEGIN;
 
 CREATE EXTENSION webauthn CASCADE;

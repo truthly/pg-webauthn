@@ -89,7 +89,7 @@ Input Parameter                | Type                                     | Defa
 [user_name]                    | text                                     |
 [user_id]                      | bytea                                    |
 [user_display_name]            | text                                     |
-[timeout]                      | interval                                 |
+[timeout]                      | interval                                 | '5 minutes'
 [user_verification]            | [webauthn.user_verification_requirement] | 'preferred'
 [tx_auth_simple]               | text                                     | `NULL`
 [tx_auth_generic_content_type] | text                                     | `NULL`
@@ -113,6 +113,8 @@ Source code: [FUNCTIONS/init_credential.sql](https://github.com/truthly/pg-webau
 Stores the random challenge and all the other fields to the [webauthn.credential_challenges](https://github.com/truthly/pg-webauthn/blob/master/TABLES/credential_challenges.sql#L1) table.
 Returns a json object compatible with the browser [navigator.credentials.create()] method,
 where the only key, `publicKey`, contains a [PublicKeyCredentialCreationOptions] object.
+
+The [timeout] value, if specified, must lie [within a reasonable range](https://www.w3.org/TR/webauthn-2/#sctn-createCredential) between 30 seconds to 10 minutes.
 
 [navigator.credentials.create()]: https://w3c.github.io/webappsec-credential-management/#dom-credentialscontainer-create
 [PublicKeyCredentialCreationOptions]: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions
@@ -208,7 +210,7 @@ Input Parameter                | Type                                     | Defa
 [challenge]                    | bytea                                    |
 [relying_party_id]             | text (*[valid domain string]*)           |
 [user_name]                    | text                                     |
-[timeout](https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialrequestoptions-timeout) | interval |
+[timeout](https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialrequestoptions-timeout) | interval | '5 minutes'
 [user_verification]            | [webauthn.user_verification_requirement] | 'preferred'
 [tx_auth_simple]               | text                                     | `NULL`
 [tx_auth_generic_content_type] | text                                     | `NULL`
@@ -220,6 +222,8 @@ Stores the random challenge to the [webauthn.assertion_challenges](https://githu
 and returns a json object with all public keys matching [relying_party_id] and [user_name].
 Such public keys have previously been created by the [webauthn.make_credential()] function,
 stored in the [webauthn.credentials](https://github.com/truthly/pg-webauthn/blob/master/TABLES/credentials.sql#L1) table.
+
+The [timeout] value, if specified, must lie [within a reasonable range](https://www.w3.org/TR/webauthn-2/#sctn-discover-from-external-source) between 30 seconds to 10 minutes.
 
 The returned json object is compatible with the browser [navigator.credentials.get()] method,
 where the only key, `publicKey`, contains a [PublicKeyCredentialRequestOptions] object.

@@ -3,11 +3,13 @@ DATA = webauthn--1.0.sql
 REGRESS = ok \
 	ok_base64url \
 	ok_ecdsa_verify \
-	error_assertions_check_timeout_exceeded \
-	error_assertions_check_user_verification \
-	error_assertions_check_verify_signature \
-	error_credentials_check_timeout_exceeded \
-	error_credentials_check_user_verification \
+	error_assertions_check_user_verified_or_not_required \
+	error_assertions_check_reasonable_timeout \
+	error_assertions_check_verified_before_timeout \
+	error_assertions_check_verified_signature \
+	error_credentials_check_credential_before_timeout \
+	error_credentials_check_user_verified_or_not_required \
+	error_credentials_check_reasonable_timeout \
 	error_invalid_base64 \
 	error_replay_attack
 

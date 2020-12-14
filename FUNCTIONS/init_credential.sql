@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION webauthn.init_credential(
   user_name text,
   user_id bytea,
   user_display_name text,
-  timeout interval,
+  timeout interval DEFAULT '5 minutes'::interval,
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
   tx_auth_simple text DEFAULT NULL,
   tx_auth_generic_content_type text DEFAULT NULL,

@@ -3,14 +3,13 @@ CREATE EXTENSION webauthn CASCADE;
 NOTICE:  installing required extension "pguecc"
 NOTICE:  installing required extension "pgcrypto"
 SELECT jsonb_pretty(webauthn.init_credential(
-  challenge := '\xdd9f0b3eed7683fd146fd4bad57148750948efcfde352671a47af0d1fb661296'::bytea,
+  challenge := '\xf1f49abe5e3dcff7a1f522252f4fb574df415dd087aae156114ac9b51fbf4129'::bytea,
   relying_party_name := 'Localhost'::text,
   relying_party_id := 'localhost'::text,
   user_name := 'test'::text,
-  user_id := '\x26724ae177836743624b3801a0e7d3d363cb65d80a050930bceafe694feddb3265e96ed0ca26fc8bd6ba058fc91ac07e4fc34dd40c63cbaa2564246ef4495faa'::bytea,
+  user_id := '\xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c282064ee24e9dc7219b6d727cc85aad4dcc0f3134f8e62c6c896a48ac08aac3db1b'::bytea,
   user_display_name := 'test'::text,
   timeout := '2 minutes'::interval,
-  user_verification := 'required',
   challenge_at := '2020-12-13 16:35:00+01'
 ));
                                                 jsonb_pretty                                                 
@@ -22,12 +21,12 @@ SELECT jsonb_pretty(webauthn.init_credential(
              "name": "Localhost"                                                                            +
          },                                                                                                 +
          "user": {                                                                                          +
-             "id": "JnJK4XeDZ0NiSzgBoOfT02PLZdgKBQkwvOr-aU_t2zJl6W7Qyib8i9a6BY_JGsB-T8NN1Axjy6olZCRu9Elfqg",+
+             "id": "szaMcxd5HFqYuBQozfPjUBKqceYJDQSTCzkASerXwoIGTuJOncchm21yfMharU3MDzE0-OYsbIlqSKwIqsPbGw",+
              "name": "test",                                                                                +
              "displayName": "test"                                                                          +
          },                                                                                                 +
          "timeout": 120000,                                                                                 +
-         "challenge": "3Z8LPu12g_0Ub9S61XFIdQlI78_eNSZxpHrw0ftmEpY",                                        +
+         "challenge": "8fSavl49z_eh9SIlL0-1dN9BXdCHquFWEUrJtR-_QSk",                                        +
          "attestation": "none",                                                                             +
          "pubKeyCredParams": [                                                                              +
              {                                                                                              +
@@ -36,7 +35,7 @@ SELECT jsonb_pretty(webauthn.init_credential(
              }                                                                                              +
          ],                                                                                                 +
          "authenticatorSelection": {                                                                        +
-             "userVerification": "required",                                                                +
+             "userVerification": "preferred",                                                               +
              "requireResidentKey": false                                                                    +
          }                                                                                                  +
      }                                                                                                      +
@@ -44,14 +43,26 @@ SELECT jsonb_pretty(webauthn.init_credential(
 (1 row)
 
 SELECT * FROM webauthn.make_credential(
-  credential_id := '8Inm42Yv1OM4dsr83aFdG1mW4c1jrFEgRKH8WFFRbWJ_dj240A4DW_dyrukyzGcmUtf9NMiDU8PDt9DGzxxnQw',
+  credential_id := 'ASiVjgqKJgvSawjRv_bjFR6l9uOgpLJ9jaZbGkxytC3vQzq21tlSuPgAnvQF6B0BLK0dujjrqvK3oBktYP8FEdYOZz8LK8PjiyDGXiCrlSYDy58JILDNJIi-n7973HgHhYiDgN_iBCTfX9Y',
   credential_type := 'public-key',
-  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjESZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQPCJ5uNmL9TjOHbK_N2hXRtZluHNY6xRIESh_FhRUW1if3Y9uNAOA1v3cq7pMsxnJlLX_TTIg1PDw7fQxs8cZ0OlAQIDJiABIVggnuXHyWYy5DWebYEgSF_H-ZHm0QtXXobEUBcouFlUIa8iWCD9aSRMdgEB58f9tblU_ZijuiHvj_66bH6WHkievyFU_g',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiM1o4TFB1MTJnXzBVYjlTNjFYRklkUWxJNzhfZU5TWnhwSHJ3MGZ0bUVwWSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2UsIm90aGVyX2tleXNfY2FuX2JlX2FkZGVkX2hlcmUiOiJkbyBub3QgY29tcGFyZSBjbGllbnREYXRhSlNPTiBhZ2FpbnN0IGEgdGVtcGxhdGUuIFNlZSBodHRwczovL2dvby5nbC95YWJQZXgifQ',
+  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjvSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFX9SYD63OAAI1vMYKZIsLJfHwVQMAawEolY4KiiYL0msI0b_24xUepfbjoKSyfY2mWxpMcrQt70M6ttbZUrj4AJ70BegdASytHbo466ryt6AZLWD_BRHWDmc_CyvD44sgxl4gq5UmA8ufCSCwzSSIvp-_e9x4B4WIg4Df4gQk31_WpQECAyYgASFYIFYGLzqrkNKDty3WMhTXQzjWxIXZekODNhjBB8MjZHgpIlgg1wRbPHszTjstSPn7dPAqVDmO0krRy8rWpTjJDAeOFVY',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiOGZTYXZsNDl6X2VoOVNJbEwwLTFkTjlCWGRDSHF1RldFVXJKdFItX1FTayIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
   relying_party_id := 'localhost',
   credential_at := '2020-12-13 16:35:10+01'
 );
-ERROR:  new row for relation "credentials" violates check constraint "user_verified_or_not_required"
-DETAIL:  Failing row contains (\xf089e6e3662fd4e33876cafcdda15d1b5996e1cd63ac512044a1fc5851516d..., \xdd9f0b3eed7683fd146fd4bad57148750948efcfde352671a47af0d1fb6612..., public-key, \xa363666d74646e6f6e656761747453746d74a068617574684461746158c449..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., t, f, t, f, 0, \x00000000000000000000000000000000, \x9ee5c7c96632e4359e6d8120485fc7f991e6d10b575e86c4501728b8595421..., \x7b2274797065223a22776562617574686e2e637265617465222c226368616c..., http://localhost, f, \x26724ae177836743624b3801a0e7d3d363cb65d80a050930bceafe694feddb..., Sun Dec 13 07:35:10 2020 PST).
-CONTEXT:  SQL function "make_credential" statement 1
+                                                              user_id                                                               
+------------------------------------------------------------------------------------------------------------------------------------
+ \xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c282064ee24e9dc7219b6d727cc85aad4dcc0f3134f8e62c6c896a48ac08aac3db1b
+(1 row)
+
+SELECT jsonb_pretty(webauthn.get_credentials(
+  challenge := '\xa5174d506a1c0a0e9cd9cd65dae1221582b17824cb9b8c91f032f43c1c09cd1f'::bytea,
+  relying_party_id := 'localhost',
+  user_name := 'test',
+  timeout := '29 seconds'::interval,
+  challenge_at := '2020-12-13 16:35:20+01'
+));
+ERROR:  new row for relation "assertion_challenges" violates check constraint "reasonable_timeout"
+DETAIL:  Failing row contains (\xa5174d506a1c0a0e9cd9cd65dae1221582b17824cb9b8c91f032f43c1c09cd..., localhost, test, @ 29 secs, preferred, null, null, null, Sun Dec 13 07:35:20 2020 PST).
+CONTEXT:  SQL function "get_credentials" statement 1
 ROLLBACK;

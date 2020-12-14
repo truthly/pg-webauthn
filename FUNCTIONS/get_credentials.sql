@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION webauthn.get_credentials(
   challenge bytea,
   relying_party_id text,
   user_name text,
-  timeout interval,
+  timeout interval DEFAULT '5 minutes'::interval,
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
   tx_auth_simple text DEFAULT NULL,
   tx_auth_generic_content_type text DEFAULT NULL,
@@ -27,7 +27,7 @@ SELECT jsonb_build_object(
         'id', webauthn.base64url_encode(credentials.credential_id)
       )
     ORDER BY credentials.credential_id),
-    'timeout', (extract(epoch from store_challenge.timeout)*1000)::bigint, -- milliseconds
+    'timeout', (extract(epoch from store_challenge.timeout)*1000)::bigint,
     'challenge', webauthn.base64url_encode(store_challenge.challenge),
     'rpId', store_challenge.relying_party_id
   ) ||

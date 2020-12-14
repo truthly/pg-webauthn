@@ -9,7 +9,7 @@ tx_auth_generic_content_type text,
 tx_auth_generic_content bytea,
 challenge_at timestamptz NOT NULL,
 PRIMARY KEY (challenge),
-CHECK (timeout >= '0'::interval),
+CONSTRAINT reasonable_timeout CHECK (timeout BETWEEN '30000 ms' AND '600000 ms'),
 CHECK ((tx_auth_generic_content_type IS NULL) = (tx_auth_generic_content IS NULL))
 );
 
