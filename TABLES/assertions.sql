@@ -1,12 +1,3 @@
-/*
-TODO: Inherit from webauthn.assertion_challenges
-to allow checking user_verification/user_verified
-via check constraint?
-
-See: https://www.postgresql.org/docs/13/tutorial-inheritance.html
-*/
-
-
 CREATE TABLE webauthn.assertions (
 signature bytea NOT NULL,
 challenge bytea NOT NULL REFERENCES webauthn.assertion_challenges,
