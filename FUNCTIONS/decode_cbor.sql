@@ -37,6 +37,8 @@ WITH RECURSIVE x AS (
          THEN substring(x.cbor,2,additional_type_value)
          WHEN major_type_value = 2 AND additional_type_value = 24
          THEN substring(x.cbor,3,get_byte(x.cbor,1))
+         WHEN major_type_value = 2 AND additional_type_value = 25
+         THEN substring(x.cbor,4,get_byte(x.cbor,1)*256+get_byte(x.cbor,2))
     END AS bytes,
     CASE WHEN major_type_value = 0 AND additional_type_value <= 23
          THEN additional_type_value
@@ -50,10 +52,16 @@ WITH RECURSIVE x AS (
   )) AS data_item_header(major_type_value,additional_type_value) ON TRUE
   JOIN LATERAL (VALUES(CASE
     WHEN major_type_value IN (2,3) AND additional_type_value <= 23 THEN 2+additional_type_value
-    WHEN major_type_value = 5 THEN 2
+    WHEN major_type_value = 5 AND additional_type_value <= 23 THEN 2
     WHEN major_type_value = 2 AND additional_type_value = 24 THEN 3+get_byte(x.cbor,1)
+    WHEN major_type_value = 2 AND additional_type_value = 25 THEN 4+get_byte(x.cbor,1)*256+get_byte(x.cbor,2)
     WHEN major_type_value = 0 AND additional_type_value <= 23 THEN 2
     WHEN major_type_value = 1 AND additional_type_value <= 23 THEN 2
+    ELSE webauthn.raise_error('Decoding of CBOR type not implemented',json_build_object(
+      'item',item,
+      'major_type_value',major_type_value,
+      'additional_type_value',additional_type_value
+    ),NULL::integer)
   END)) AS next_item(byte_offset) ON TRUE
   WHERE length(x.cbor) > 0
 )

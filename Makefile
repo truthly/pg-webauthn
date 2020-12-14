@@ -23,6 +23,7 @@ all: webauthn--1.0.sql
 
 SQL_SRC = \
   complain_header.sql \
+	FUNCTIONS/raise_error.sql \
 	ENUMS/credential_type.sql \
 	ENUMS/user_verification_requirement.sql \
   FUNCTIONS/base64url_decode.sql \
