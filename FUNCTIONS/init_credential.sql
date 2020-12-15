@@ -6,6 +6,7 @@ CREATE OR REPLACE FUNCTION webauthn.init_credential(
   relying_party_name text,
   relying_party_id text DEFAULT NULL,
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
+  attestation webauthn.attestation_conveyance_preference DEFAULT 'none',
   timeout interval DEFAULT '5 minutes'::interval,
   challenge_at timestamptz DEFAULT now()
 )
@@ -13,8 +14,8 @@ RETURNS jsonb
 LANGUAGE sql
 AS $$
 INSERT INTO webauthn.credential_challenges
-       (challenge, user_name, user_id, user_display_name, relying_party_name, relying_party_id, user_verification, timeout, challenge_at)
-VALUES (challenge, user_name, user_id, user_display_name, relying_party_name, relying_party_id, user_verification, timeout, challenge_at)
+       (challenge, user_name, user_id, user_display_name, relying_party_name, relying_party_id, user_verification, attestation, timeout, challenge_at)
+VALUES (challenge, user_name, user_id, user_display_name, relying_party_name, relying_party_id, user_verification, attestation, timeout, challenge_at)
 RETURNING
 jsonb_build_object(
   'publicKey', jsonb_build_object(
@@ -39,7 +40,7 @@ jsonb_build_object(
       'userVerification', user_verification
     ),
     'timeout', (extract(epoch from timeout)*1000)::bigint,
-    'attestation', 'none'
+    'attestation', attestation
   )
 )
 $$;

@@ -81,16 +81,17 @@ To sign-up, the browser first calls [webauthn.init_credential()] to get a list o
 
 <h3 id="init-credential"><code>webauthn.init_credential(...) → jsonb</code></h3>
 
-Input Parameter                | Type                                     | Default
------------------------------- | ---------------------------------------- | -------
-[challenge]                    | bytea                                    |
-[user_name]                    | text                                     |
-[user_id]                      | bytea                                    |
-[user_display_name]            | text                                     |
-[relying_party_name]           | text                                     |
-[relying_party_id]             | text (*[valid domain string]*)           | NULL
-[user_verification]            | [webauthn.user_verification_requirement] | 'preferred'
-[timeout]                      | interval                                 | '5 minutes'
+Input Parameter                | Type                                                  | Default
+------------------------------ | ----------------------------------------------------- | -------
+[challenge]                    | bytea                                                 |
+[user_name]                    | text                                                  |
+[user_id]                      | bytea                                                 |
+[user_display_name]            | text                                                  |
+[relying_party_name]           | text                                                  |
+[relying_party_id]             | text (*[valid domain string]*)                        | NULL
+[user_verification]            | [webauthn.user_verification_requirement]              | 'preferred'
+[attestation]                  | [webauthn.webauthn.attestation_conveyance_preference] | 'none'
+[timeout]                      | interval                                              | '5 minutes'
 
 [challenge]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialrequestoptions-challenge
 [user_name]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-user
@@ -100,6 +101,8 @@ Input Parameter                | Type                                     | Defa
 [relying_party_id]: https://www.w3.org/TR/webauthn-2/#relying-party-identifier
 [valid domain string]: https://url.spec.whatwg.org/#valid-domain-string
 [user_verification]: https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-userverification
+[attestation]: https://www.w3.org/TR/webauthn-2/#credentialcreationdata-attestationconveyancepreferenceoption
+[webauthn.webauthn.attestation_conveyance_preference]: https://www.w3.org/TR/webauthn-2/#attestation-conveyance
 [webauthn.user_verification_requirement]: https://www.w3.org/TR/webauthn-2/#enum-userVerificationRequirement
 [timeout]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-timeout
 

@@ -26,6 +26,7 @@ SQL_SRC = \
 	FUNCTIONS/raise_error.sql \
 	ENUMS/credential_type.sql \
 	ENUMS/user_verification_requirement.sql \
+	ENUMS/attestation_conveyance_preference.sql \
   FUNCTIONS/base64url_decode.sql \
   FUNCTIONS/base64url_encode.sql \
   FUNCTIONS/decode_cbor.sql \

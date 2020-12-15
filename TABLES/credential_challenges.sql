@@ -6,6 +6,7 @@ user_display_name text NOT NULL,
 relying_party_name text NOT NULL,
 relying_party_id text,
 user_verification webauthn.user_verification_requirement NOT NULL,
+attestation webauthn.attestation_conveyance_preference NOT NULL,
 timeout interval NOT NULL,
 challenge_at timestamptz NOT NULL,
 PRIMARY KEY (challenge),
@@ -21,6 +22,7 @@ COMMENT ON COLUMN webauthn.credential_challenges.user_name IS 'https://www.w3.or
 COMMENT ON COLUMN webauthn.credential_challenges.user_id IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-id';
 COMMENT ON COLUMN webauthn.credential_challenges.user_display_name IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-displayname';
 COMMENT ON COLUMN webauthn.credential_challenges.user_verification IS 'https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-userverification';
+COMMENT ON COLUMN webauthn.credential_challenges.attestation IS 'https://www.w3.org/TR/webauthn-2/#enum-attestation-convey';
 COMMENT ON COLUMN webauthn.credential_challenges.timeout IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-timeout';
 COMMENT ON COLUMN webauthn.credential_challenges.relying_party_name IS 'https://www.w3.org/TR/webauthn-2/#dictionary-rp-credential-params';
 COMMENT ON COLUMN webauthn.credential_challenges.relying_party_id IS 'https://www.w3.org/TR/webauthn-2/#relying-party-identifier';
