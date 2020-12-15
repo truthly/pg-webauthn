@@ -63,7 +63,7 @@ SELECT jsonb_pretty(webauthn.get_credentials(
   challenge_at := '2020-12-15 08:30:13.733084+01'
 ));
 ERROR:  new row for relation "assertion_challenges" violates check constraint "reasonable_timeout"
-DETAIL:  Failing row contains (\x6a19f4c245388de79290f5338196c51e19fc33273afb1891d4e90296bfe06d..., alex.p.mueller@example.com, discouraged, @ 10 mins 0.001 secs, null, Mon Dec 14 23:30:13.733084 2020 PST, null, null, null).
+DETAIL:  Failing row contains (\x6a19f4c245388de79290f5338196c51e19fc33273afb1891d4e90296bfe06d..., alex.p.mueller@example.com, discouraged, @ 10 mins 0.001 secs, null, Mon Dec 14 23:30:13.733084 2020 PST).
 CONTEXT:  SQL function "get_credentials" statement 1
 SELECT * FROM webauthn.verify_assertion(
   credential_id := 'TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA',

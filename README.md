@@ -91,9 +91,6 @@ Input Parameter                | Type                                     | Defa
 [user_display_name]            | text                                     |
 [timeout]                      | interval                                 | '5 minutes'
 [user_verification]            | [webauthn.user_verification_requirement] | 'preferred'
-[tx_auth_simple]               | text                                     | `NULL`
-[tx_auth_generic_content_type] | text                                     | `NULL`
-[tx_auth_generic_content]      | bytea                                    | `NULL`
 
 [challenge]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialrequestoptions-challenge
 [relying_party_name]: https://www.w3.org/TR/webauthn-2/#dictionary-rp-credential-params
@@ -103,9 +100,6 @@ Input Parameter                | Type                                     | Defa
 [user_display_name]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-displayname
 [timeout]: https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialcreationoptions-timeout
 [user_verification]: https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-userverification
-[tx_auth_simple]: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions
-[tx_auth_generic_content_type]: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions
-[tx_auth_generic_content]: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions/extensions
 [webauthn.user_verification_requirement]: https://www.w3.org/TR/webauthn-2/#enum-userVerificationRequirement
 
 Source code: [FUNCTIONS/init_credential.sql](https://github.com/truthly/pg-webauthn/blob/master/FUNCTIONS/init_credential.sql#L1)
@@ -212,9 +206,6 @@ Input Parameter                | Type                                     | Defa
 [user_name]                    | text                                     |
 [timeout](https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialrequestoptions-timeout) | interval | '5 minutes'
 [user_verification]            | [webauthn.user_verification_requirement] | 'preferred'
-[tx_auth_simple]               | text                                     | `NULL`
-[tx_auth_generic_content_type] | text                                     | `NULL`
-[tx_auth_generic_content]      | bytea                                    | `NULL`
 
 Source code: [FUNCTIONS/get_credentials.sql](https://github.com/truthly/pg-webauthn/blob/master/FUNCTIONS/get_credentials.sql#L1)
 
