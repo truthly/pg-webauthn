@@ -3,31 +3,30 @@ CREATE EXTENSION webauthn CASCADE;
 NOTICE:  installing required extension "pguecc"
 NOTICE:  installing required extension "pgcrypto"
 SELECT jsonb_pretty(webauthn.init_credential(
-  challenge := '\x238d389206bf51fce7ed8b71972ca8d74a99771ffff7c3365d8d4f2129fb51e2'::bytea,
-  relying_party_name := 'Localhost'::text,
-  relying_party_id := 'localhost'::text,
-  user_name := 'test'::text,
-  user_id := '\xae1a891beac7d8235f44daccfa9cebdc7f85c894549a2cf15da2df0ae3c65f299d0e9b44be8db22879d846188f3beda17e21037c2b280ddccaac9cc89767f3cc'::bytea,
-  user_display_name := 'test'::text,
-  timeout := '2 minutes'::interval,
-  user_verification := 'required',
-  challenge_at := '2020-12-13 16:35:00+01'
+  challenge := '\xd4ef72bc4cd34733abb91602e4aa5cc4d446fae92aa3dbcf9e2c2052a5fc9857'::bytea,
+  user_name := 'alex.p.mueller@example.com',
+  user_id := '\xc172e425a2e82488bda49038fd66970a94cfa9f3bfa740d421f6040cdb3cb44f57cb3326ac4d0f7e16ed9afe66499ad8ded1f9ce29db45c8e48ba989da60e163'::bytea,
+  user_display_name := 'Alex P. Müller',
+  relying_party_name := 'ACME Corporation',
+  relying_party_id := NULL,
+  user_verification := 'discouraged',
+  timeout := '00:05:00',
+  challenge_at := '2020-12-15 08:30:09.384246+01'
 ));
                                                 jsonb_pretty                                                 
 -------------------------------------------------------------------------------------------------------------
  {                                                                                                          +
      "publicKey": {                                                                                         +
          "rp": {                                                                                            +
-             "id": "localhost",                                                                             +
-             "name": "Localhost"                                                                            +
+             "name": "ACME Corporation"                                                                     +
          },                                                                                                 +
          "user": {                                                                                          +
-             "id": "rhqJG-rH2CNfRNrM-pzr3H-FyJRUmizxXaLfCuPGXymdDptEvo2yKHnYRhiPO-2hfiEDfCsoDdzKrJzIl2fzzA",+
-             "name": "test",                                                                                +
-             "displayName": "test"                                                                          +
+             "id": "wXLkJaLoJIi9pJA4_WaXCpTPqfO_p0DUIfYEDNs8tE9XyzMmrE0Pfhbtmv5mSZrY3tH5zinbRcjki6mJ2mDhYw",+
+             "name": "alex.p.mueller@example.com",                                                          +
+             "displayName": "Alex P. Müller"                                                                +
          },                                                                                                 +
-         "timeout": 120000,                                                                                 +
-         "challenge": "I404kga_Ufzn7Ytxlyyo10qZdx__98M2XY1PISn7UeI",                                        +
+         "timeout": 300000,                                                                                 +
+         "challenge": "1O9yvEzTRzOruRYC5KpcxNRG-ukqo9vPniwgUqX8mFc",                                        +
          "attestation": "none",                                                                             +
          "pubKeyCredParams": [                                                                              +
              {                                                                                              +
@@ -36,7 +35,7 @@ SELECT jsonb_pretty(webauthn.init_credential(
              }                                                                                              +
          ],                                                                                                 +
          "authenticatorSelection": {                                                                        +
-             "userVerification": "required",                                                                +
+             "userVerification": "discouraged",                                                             +
              "requireResidentKey": false                                                                    +
          }                                                                                                  +
      }                                                                                                      +
@@ -44,36 +43,34 @@ SELECT jsonb_pretty(webauthn.init_credential(
 (1 row)
 
 SELECT * FROM webauthn.make_credential(
-  credential_id := 'NJnNZhUPGJ_akprSCWU76d54aNWqbAPAW008_oAGLFJ8DA97dzgqmlw5AjO4tAYuJrKZ-VVnCCQuFHFcGul2DQ',
+  credential_id := 'TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA',
   credential_type := 'public-key',
-  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjESZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAwAAAAAAAAAAAAAAAAAAAAAAQDSZzWYVDxif2pKa0gllO-neeGjVqmwDwFtNPP6ABixSfAwPe3c4KppcOQIzuLQGLiaymflVZwgkLhRxXBrpdg2lAQIDJiABIVggE2ebqUbHwcyHus8XAayzIyYqbc3d42ug3hafythiXHsiWCAXTPrRHtV_vlkcR64JcGQhszaTIiXOkiGx56yC5qfoPg',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiSTQwNGtnYV9VZnpuN1l0eGx5eW8xMHFaZHhfXzk4TTJYWTFQSVNuN1VlSSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  relying_party_id := 'localhost',
-  credential_at := '2020-12-13 16:35:10+01'
+  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjESZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEzL3PXIEOEtx-PfEHs9opUHZA0tNrNLEe8F8omiq1KYV0ETaoj9aX86AT7BHsvMIxw1F4fwPvdc6j_x9G5HqISlAQIDJiABIVggf6kt0GZu7nwT3be2JJsMj5-6Q2CFfE4V0vxjSitaH48iWCDbmYOzGUadNecZo7k-GsKShUzT_yrVCJhoGwoy_7y8ag',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiMU85eXZFelRSek9ydVJZQzVLcGN4TlJHLXVrcW85dlBuaXdnVXFYOG1GYyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
+  credential_at := '2020-12-15 08:30:12.395851+01'
 );
                                                               user_id                                                               
 ------------------------------------------------------------------------------------------------------------------------------------
- \xae1a891beac7d8235f44daccfa9cebdc7f85c894549a2cf15da2df0ae3c65f299d0e9b44be8db22879d846188f3beda17e21037c2b280ddccaac9cc89767f3cc
+ \xc172e425a2e82488bda49038fd66970a94cfa9f3bfa740d421f6040cdb3cb44f57cb3326ac4d0f7e16ed9afe66499ad8ded1f9ce29db45c8e48ba989da60e163
 (1 row)
 
 SELECT jsonb_pretty(webauthn.get_credentials(
-  challenge := '\x978f567dc9a10c4a42d1b8083e8c44f0bc4bd68675aa66d6accefe0e49d9d3c0'::bytea,
-  relying_party_id := 'localhost',
-  user_name := 'test',
-  timeout := '2 minutes'::interval,
+  challenge := '\x6a19f4c245388de79290f5338196c51e19fc33273afb1891d4e90296bfe06d0b'::bytea,
+  user_name := 'alex.p.mueller@example.com',
   user_verification := 'required',
-  challenge_at := '2020-12-13 16:35:20+01'
+  timeout := '00:05:00',
+  relying_party_id := NULL,
+  challenge_at := '2020-12-15 08:30:13.733084+01'
 ));
                                                   jsonb_pretty                                                   
 -----------------------------------------------------------------------------------------------------------------
  {                                                                                                              +
      "publicKey": {                                                                                             +
-         "rpId": "localhost",                                                                                   +
-         "timeout": 120000,                                                                                     +
-         "challenge": "l49WfcmhDEpC0bgIPoxE8LxL1oZ1qmbWrM7-DknZ08A",                                            +
+         "timeout": 300000,                                                                                     +
+         "challenge": "ahn0wkU4jeeSkPUzgZbFHhn8Myc6-xiR1OkClr_gbQs",                                            +
          "allowCredentials": [                                                                                  +
              {                                                                                                  +
-                 "id": "NJnNZhUPGJ_akprSCWU76d54aNWqbAPAW008_oAGLFJ8DA97dzgqmlw5AjO4tAYuJrKZ-VVnCCQuFHFcGul2DQ",+
+                 "id": "TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA",+
                  "type": "public-key"                                                                           +
              }                                                                                                  +
          ],                                                                                                     +
@@ -83,16 +80,15 @@ SELECT jsonb_pretty(webauthn.get_credentials(
 (1 row)
 
 SELECT * FROM webauthn.verify_assertion(
-  credential_id := 'NJnNZhUPGJ_akprSCWU76d54aNWqbAPAW008_oAGLFJ8DA97dzgqmlw5AjO4tAYuJrKZ-VVnCCQuFHFcGul2DQ',
+  credential_id := 'TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA',
   credential_type := 'public-key',
-  authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MBAAAABA',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoibDQ5V2ZjbWhERXBDMGJnSVBveEU4THhMMW9aMXFtYldyTTctRGtuWjA4QSIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  signature := 'MEUCIQDJ4LWF8sn6W-MVDPZ31bQYyrMfw6FhJFIU3tT5K8U2OgIgT9VQipFTxkdJQfVNDOQdxJhBE_N1M5JyEG5vE5fP4dE',
-  user_handle := '',
-  relying_party_id := 'localhost',
-  verified_at := '2020-12-13 16:35:30+01'
+  authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MBAAAAAQ',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiYWhuMHdrVTRqZWVTa1BVemdaYkZIaG44TXljNi14aVIxT2tDbHJfZ2JRcyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
+  signature := 'MEQCIBD6sBMH8-7Vm8EWASZe-qtSS1DQF72c3-7E9hsByqjWAiBpxun42by9uk5UeMt1sIQzLVGwviwhcBsVfHyHq7mAVw',
+  user_handle := NULL,
+  verified_at := '2020-12-15 08:30:14.679551+01'
 );
 ERROR:  new row for relation "assertions" violates check constraint "user_verified_or_not_required"
-DETAIL:  Failing row contains (\x3045022100c9e0b585f2c9fa5be3150cf677d5b418cab31fc3a161245214de..., \x978f567dc9a10c4a42d1b8083e8c44f0bc4bd68675aa66d6accefe0e49d9d3..., \x3499cd66150f189fda929ad209653be9de7868d5aa6c03c05b4d3cfe80062c..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., t, f, f, f, 4, \x7b2274797065223a22776562617574686e2e676574222c226368616c6c656e..., http://localhost, f, \xae1a891beac7d8235f44daccfa9cebdc7f85c894549a2cf15da2df0ae3c65f..., null, Sun Dec 13 07:35:30 2020 PST).
+DETAIL:  Failing row contains (\x3044022010fab01307f3eed59bc11601265efaab524b50d017bd9cdfeec4f6..., \x6a19f4c245388de79290f5338196c51e19fc33273afb1891d4e90296bfe06d..., \x4ccbdcf5c810e12dc7e3df107b3da29507640d2d36b34b11ef05f289a2ab52..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., t, f, f, f, 1, \x7b2274797065223a22776562617574686e2e676574222c226368616c6c656e..., http://localhost, f, \xc172e425a2e82488bda49038fd66970a94cfa9f3bfa740d421f6040cdb3cb4..., null, Mon Dec 14 23:30:14.679551 2020 PST).
 CONTEXT:  SQL function "verify_assertion" statement 1
 ROLLBACK;

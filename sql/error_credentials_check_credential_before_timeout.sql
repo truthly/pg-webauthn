@@ -3,23 +3,23 @@ BEGIN;
 CREATE EXTENSION webauthn CASCADE;
 
 SELECT jsonb_pretty(webauthn.init_credential(
-  challenge := '\xf1f49abe5e3dcff7a1f522252f4fb574df415dd087aae156114ac9b51fbf4129'::bytea,
-  relying_party_name := 'Localhost'::text,
-  relying_party_id := 'localhost'::text,
-  user_name := 'test'::text,
-  user_id := '\xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c282064ee24e9dc7219b6d727cc85aad4dcc0f3134f8e62c6c896a48ac08aac3db1b'::bytea,
-  user_display_name := 'test'::text,
-  timeout := '2 minutes'::interval,
-  challenge_at := '2020-12-13 16:35:00+01'
+  challenge := '\xd4ef72bc4cd34733abb91602e4aa5cc4d446fae92aa3dbcf9e2c2052a5fc9857'::bytea,
+  user_name := 'alex.p.mueller@example.com',
+  user_id := '\xc172e425a2e82488bda49038fd66970a94cfa9f3bfa740d421f6040cdb3cb44f57cb3326ac4d0f7e16ed9afe66499ad8ded1f9ce29db45c8e48ba989da60e163'::bytea,
+  user_display_name := 'Alex P. Müller',
+  relying_party_name := 'ACME Corporation',
+  relying_party_id := NULL,
+  user_verification := 'discouraged',
+  timeout := '00:05:00',
+  challenge_at := '2020-12-15 08:30:09.384246+01'
 ));
 
 SELECT * FROM webauthn.make_credential(
-  credential_id := 'ASiVjgqKJgvSawjRv_bjFR6l9uOgpLJ9jaZbGkxytC3vQzq21tlSuPgAnvQF6B0BLK0dujjrqvK3oBktYP8FEdYOZz8LK8PjiyDGXiCrlSYDy58JILDNJIi-n7973HgHhYiDgN_iBCTfX9Y',
+  credential_id := 'TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA',
   credential_type := 'public-key',
-  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjvSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFX9SYD63OAAI1vMYKZIsLJfHwVQMAawEolY4KiiYL0msI0b_24xUepfbjoKSyfY2mWxpMcrQt70M6ttbZUrj4AJ70BegdASytHbo466ryt6AZLWD_BRHWDmc_CyvD44sgxl4gq5UmA8ufCSCwzSSIvp-_e9x4B4WIg4Df4gQk31_WpQECAyYgASFYIFYGLzqrkNKDty3WMhTXQzjWxIXZekODNhjBB8MjZHgpIlgg1wRbPHszTjstSPn7dPAqVDmO0krRy8rWpTjJDAeOFVY',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiOGZTYXZsNDl6X2VoOVNJbEwwLTFkTjlCWGRDSHF1RldFVXJKdFItX1FTayIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  relying_party_id := 'localhost',
-  credential_at := '2020-12-13 16:37:01+01'
+  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjESZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEzL3PXIEOEtx-PfEHs9opUHZA0tNrNLEe8F8omiq1KYV0ETaoj9aX86AT7BHsvMIxw1F4fwPvdc6j_x9G5HqISlAQIDJiABIVggf6kt0GZu7nwT3be2JJsMj5-6Q2CFfE4V0vxjSitaH48iWCDbmYOzGUadNecZo7k-GsKShUzT_yrVCJhoGwoy_7y8ag',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiMU85eXZFelRSek9ydVJZQzVLcGN4TlJHLXVrcW85dlBuaXdnVXFYOG1GYyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
+  credential_at := '2020-12-15 08:40:12.395851+01'
 );
 
 ROLLBACK;

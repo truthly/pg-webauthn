@@ -1,17 +1,17 @@
 EXTENSION = webauthn
 DATA = webauthn--1.0.sql
 REGRESS = ok \
-	ok_base64url \
-	ok_ecdsa_verify \
+	ok_user_handle \
 	error_assertions_check_user_verified_or_not_required \
 	error_assertions_check_reasonable_timeout \
 	error_assertions_check_verified_before_timeout \
 	error_assertions_check_verified_signature \
+	error_assertions_check_user_handle_equal_or_null \
 	error_credentials_check_credential_before_timeout \
 	error_credentials_check_user_verified_or_not_required \
 	error_credentials_check_reasonable_timeout \
-	error_invalid_base64 \
-	error_replay_attack
+	error_replay_attack \
+	error_hijack_attack
 
 EXTRA_CLEAN = webauthn--1.0.sql
 
@@ -47,7 +47,8 @@ SQL_SRC = \
   FUNCTIONS/init_credential.sql \
   FUNCTIONS/make_credential.sql \
   FUNCTIONS/get_credentials.sql \
-  FUNCTIONS/verify_assertion.sql
+  FUNCTIONS/verify_assertion.sql \
+	FUNCTIONS/generate_test.sql
 
 webauthn--1.0.sql: $(SQL_SRC)
 	cat $^ > $@

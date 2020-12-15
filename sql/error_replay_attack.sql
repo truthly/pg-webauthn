@@ -19,80 +19,88 @@ BEGIN;
 CREATE EXTENSION webauthn CASCADE;
 
 SELECT jsonb_pretty(webauthn.init_credential(
-  challenge := '\xf1f49abe5e3dcff7a1f522252f4fb574df415dd087aae156114ac9b51fbf4129'::bytea,
-  relying_party_name := 'Localhost'::text,
-  relying_party_id := 'localhost'::text,
-  user_name := 'test'::text,
-  user_id := '\xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c282064ee24e9dc7219b6d727cc85aad4dcc0f3134f8e62c6c896a48ac08aac3db1b'::bytea,
-  user_display_name := 'test'::text,
-  timeout := '2 minutes'::interval
+  challenge := '\x30d5843dc347fe7d9328675e964b7efded1f3112bb0f928e6fb147fc86c564ba'::bytea,
+  user_name := 'alex.p.mueller@example.com',
+  user_id := '\x927f90c2323748d1e2c24c39af7d240423f5d1d0fbed1d77ccfe372b2d67ab244f988bf5cf7c72f8b7f0fdcb359498a935c26f4b8fc1e2b564b54181a83468da'::bytea,
+  user_display_name := 'Alex P. Müller',
+  relying_party_name := 'ACME Corporation',
+  relying_party_id := NULL,
+  user_verification := 'discouraged',
+  timeout := '00:05:00'::interval,
+  challenge_at := '2020-12-15 08:08:56.596311+01'
 ));
 
 SAVEPOINT init_credential;
 SELECT jsonb_pretty(webauthn.init_credential(
-  challenge := '\xf1f49abe5e3dcff7a1f522252f4fb574df415dd087aae156114ac9b51fbf4129'::bytea,
-  relying_party_name := 'Localhost'::text,
-  relying_party_id := 'localhost'::text,
-  user_name := 'test'::text,
-  user_id := '\xb3368c7317791c5a98b81428cdf3e35012aa71e6090d04930b390049ead7c282064ee24e9dc7219b6d727cc85aad4dcc0f3134f8e62c6c896a48ac08aac3db1b'::bytea,
-  user_display_name := 'test'::text,
-  timeout := '2 minutes'::interval
+  challenge := '\x30d5843dc347fe7d9328675e964b7efded1f3112bb0f928e6fb147fc86c564ba'::bytea,
+  user_name := 'alex.p.mueller@example.com',
+  user_id := '\x927f90c2323748d1e2c24c39af7d240423f5d1d0fbed1d77ccfe372b2d67ab244f988bf5cf7c72f8b7f0fdcb359498a935c26f4b8fc1e2b564b54181a83468da'::bytea,
+  user_display_name := 'Alex P. Müller',
+  relying_party_name := 'ACME Corporation',
+  relying_party_id := NULL,
+  user_verification := 'discouraged',
+  timeout := '00:05:00'::interval,
+  challenge_at := '2020-12-15 08:08:56.596311+01'
 ));
 ROLLBACK TO init_credential;
 
 SELECT * FROM webauthn.make_credential(
-  credential_id := 'ASiVjgqKJgvSawjRv_bjFR6l9uOgpLJ9jaZbGkxytC3vQzq21tlSuPgAnvQF6B0BLK0dujjrqvK3oBktYP8FEdYOZz8LK8PjiyDGXiCrlSYDy58JILDNJIi-n7973HgHhYiDgN_iBCTfX9Y',
+  credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
-  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjvSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFX9SYD63OAAI1vMYKZIsLJfHwVQMAawEolY4KiiYL0msI0b_24xUepfbjoKSyfY2mWxpMcrQt70M6ttbZUrj4AJ70BegdASytHbo466ryt6AZLWD_BRHWDmc_CyvD44sgxl4gq5UmA8ufCSCwzSSIvp-_e9x4B4WIg4Df4gQk31_WpQECAyYgASFYIFYGLzqrkNKDty3WMhTXQzjWxIXZekODNhjBB8MjZHgpIlgg1wRbPHszTjstSPn7dPAqVDmO0krRy8rWpTjJDAeOFVY',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiOGZTYXZsNDl6X2VoOVNJbEwwLTFkTjlCWGRDSHF1RldFVXJKdFItX1FTayIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  relying_party_id := 'localhost'
+  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVkBEUmWDeWIDoxodDQXD2R2YFuP5K65ooYyx5lc87qDHZdjRV_YYQytzgACNbzGCmSLCyXx8FUDAI0Bc0FEwQ4VpgZpE6sSmHWw5niR-0guL2vLy8LDZ89B_vXaCUilANFf7scFDZWZBWlFZTcDoK79dwpuegLZJLLn-jRnao7s7B2eazwrQayKq9bHda1Q-fRrwZrpBZuQS-xRc6n2KRn2_gN5h5PPOnSHa4CXHx7NrK6qMH-4xDIHmQFXBGGSFkSbNAKXT3ulAQIDJiABIVggxMJIqQI-xxUSsJGR9HIbIZHKIiN-alA9B2SdzIzjzwkiWCCHOhTTOTy3-H2rNbbfs8jojm8AeaNYEfQCplT5aYjwtA',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiTU5XRVBjTkhfbjJUS0dkZWxrdC1fZTBmTVJLN0Q1S09iN0ZIX0liRlpMbyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2UsIm90aGVyX2tleXNfY2FuX2JlX2FkZGVkX2hlcmUiOiJkbyBub3QgY29tcGFyZSBjbGllbnREYXRhSlNPTiBhZ2FpbnN0IGEgdGVtcGxhdGUuIFNlZSBodHRwczovL2dvby5nbC95YWJQZXgifQ',
+  credential_at := '2020-12-15 08:09:00.20485+01'
 );
 
 SAVEPOINT make_credential;
 SELECT * FROM webauthn.make_credential(
-  credential_id := 'ASiVjgqKJgvSawjRv_bjFR6l9uOgpLJ9jaZbGkxytC3vQzq21tlSuPgAnvQF6B0BLK0dujjrqvK3oBktYP8FEdYOZz8LK8PjiyDGXiCrlSYDy58JILDNJIi-n7973HgHhYiDgN_iBCTfX9Y',
+  credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
-  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjvSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFX9SYD63OAAI1vMYKZIsLJfHwVQMAawEolY4KiiYL0msI0b_24xUepfbjoKSyfY2mWxpMcrQt70M6ttbZUrj4AJ70BegdASytHbo466ryt6AZLWD_BRHWDmc_CyvD44sgxl4gq5UmA8ufCSCwzSSIvp-_e9x4B4WIg4Df4gQk31_WpQECAyYgASFYIFYGLzqrkNKDty3WMhTXQzjWxIXZekODNhjBB8MjZHgpIlgg1wRbPHszTjstSPn7dPAqVDmO0krRy8rWpTjJDAeOFVY',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiOGZTYXZsNDl6X2VoOVNJbEwwLTFkTjlCWGRDSHF1RldFVXJKdFItX1FTayIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  relying_party_id := 'localhost'
+  attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVkBEUmWDeWIDoxodDQXD2R2YFuP5K65ooYyx5lc87qDHZdjRV_YYQytzgACNbzGCmSLCyXx8FUDAI0Bc0FEwQ4VpgZpE6sSmHWw5niR-0guL2vLy8LDZ89B_vXaCUilANFf7scFDZWZBWlFZTcDoK79dwpuegLZJLLn-jRnao7s7B2eazwrQayKq9bHda1Q-fRrwZrpBZuQS-xRc6n2KRn2_gN5h5PPOnSHa4CXHx7NrK6qMH-4xDIHmQFXBGGSFkSbNAKXT3ulAQIDJiABIVggxMJIqQI-xxUSsJGR9HIbIZHKIiN-alA9B2SdzIzjzwkiWCCHOhTTOTy3-H2rNbbfs8jojm8AeaNYEfQCplT5aYjwtA',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiTU5XRVBjTkhfbjJUS0dkZWxrdC1fZTBmTVJLN0Q1S09iN0ZIX0liRlpMbyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2UsIm90aGVyX2tleXNfY2FuX2JlX2FkZGVkX2hlcmUiOiJkbyBub3QgY29tcGFyZSBjbGllbnREYXRhSlNPTiBhZ2FpbnN0IGEgdGVtcGxhdGUuIFNlZSBodHRwczovL2dvby5nbC95YWJQZXgifQ',
+  credential_at := '2020-12-15 08:09:00.20485+01'
 );
 ROLLBACK TO make_credential;
 
 SELECT jsonb_pretty(webauthn.get_credentials(
-  challenge := '\xa5174d506a1c0a0e9cd9cd65dae1221582b17824cb9b8c91f032f43c1c09cd1f'::bytea,
-  relying_party_id := 'localhost',
-  user_name := 'test',
-  timeout := '2 minutes'::interval
+  challenge := '\x014fc58eef9713a5c89e6094d5847faf39dd05efac8713a6024c5812e9178599'::bytea,
+  user_name := 'alex.p.mueller@example.com',
+  user_verification := 'discouraged',
+  timeout := '00:05:00',
+  relying_party_id := NULL,
+  challenge_at := '2020-12-15 08:09:01.608713+01'
 ));
 
 SAVEPOINT get_credentials;
 SELECT jsonb_pretty(webauthn.get_credentials(
-  challenge := '\xa5174d506a1c0a0e9cd9cd65dae1221582b17824cb9b8c91f032f43c1c09cd1f'::bytea,
-  relying_party_id := 'localhost',
-  user_name := 'test',
-  timeout := '2 minutes'::interval
+  challenge := '\x014fc58eef9713a5c89e6094d5847faf39dd05efac8713a6024c5812e9178599'::bytea,
+  user_name := 'alex.p.mueller@example.com',
+  user_verification := 'discouraged',
+  timeout := '00:05:00',
+  relying_party_id := NULL,
+  challenge_at := '2020-12-15 08:09:01.608713+01'
 ));
 ROLLBACK TO get_credentials;
 
 SELECT * FROM webauthn.verify_assertion(
-  credential_id := 'ASiVjgqKJgvSawjRv_bjFR6l9uOgpLJ9jaZbGkxytC3vQzq21tlSuPgAnvQF6B0BLK0dujjrqvK3oBktYP8FEdYOZz8LK8PjiyDGXiCrlSYDy58JILDNJIi-n7973HgHhYiDgN_iBCTfX9Y',
+  credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
-  authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX9SYFg',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoicFJkTlVHb2NDZzZjMmMxbDJ1RWlGWUt4ZUNUTG00eVI4REwwUEJ3SnpSOCIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  signature := 'MEUCIBLCsANiAuhOPX2_GkzCPHhYPAL2xL1Ms22xFHiLDHJfAiEA_Ru_HfC51p-PjvU9VVV5lRKk_swZ9vKMJedQyhnsc4w',
-  user_handle := 'szaMcxd5HFqYuBQozfPjUBKqceYJDQSTCzkASerXwoIGTuJOncchm21yfMharU3MDzE0-OYsbIlqSKwIqsPbGw',
-  relying_party_id := 'localhost'
+  authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX9hhDw',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQVVfRmp1LVhFNlhJbm1DVTFZUl9yem5kQmUtc2h4T21Ba3hZRXVrWGhaayIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
+  signature := 'MEYCIQCpphN2t04K-4uEft7Cm_xxcH1WuZuz3cSkGkMM7_bV-gIhAKwNJ9HYgZYpBJG-1xD6k9MRQU0J39HiqD7X_g9Wx_nU',
+  user_handle := 'kn-QwjI3SNHiwkw5r30kBCP10dD77R13zP43Ky1nqyRPmIv1z3xy-Lfw_cs1lJipNcJvS4_B4rVktUGBqDRo2g',
+  verified_at := '2020-12-15 08:09:03.3849+01'
 );
 
 SAVEPOINT verify_assertion;
 SELECT * FROM webauthn.verify_assertion(
-  credential_id := 'ASiVjgqKJgvSawjRv_bjFR6l9uOgpLJ9jaZbGkxytC3vQzq21tlSuPgAnvQF6B0BLK0dujjrqvK3oBktYP8FEdYOZz8LK8PjiyDGXiCrlSYDy58JILDNJIi-n7973HgHhYiDgN_iBCTfX9Y',
+  credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
-  authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX9SYFg',
-  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoicFJkTlVHb2NDZzZjMmMxbDJ1RWlGWUt4ZUNUTG00eVI4REwwUEJ3SnpSOCIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
-  signature := 'MEUCIBLCsANiAuhOPX2_GkzCPHhYPAL2xL1Ms22xFHiLDHJfAiEA_Ru_HfC51p-PjvU9VVV5lRKk_swZ9vKMJedQyhnsc4w',
-  user_handle := 'szaMcxd5HFqYuBQozfPjUBKqceYJDQSTCzkASerXwoIGTuJOncchm21yfMharU3MDzE0-OYsbIlqSKwIqsPbGw',
-  relying_party_id := 'localhost'
+  authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFX9hhDw',
+  client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQVVfRmp1LVhFNlhJbm1DVTFZUl9yem5kQmUtc2h4T21Ba3hZRXVrWGhaayIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
+  signature := 'MEYCIQCpphN2t04K-4uEft7Cm_xxcH1WuZuz3cSkGkMM7_bV-gIhAKwNJ9HYgZYpBJG-1xD6k9MRQU0J39HiqD7X_g9Wx_nU',
+  user_handle := 'kn-QwjI3SNHiwkw5r30kBCP10dD77R13zP43Ky1nqyRPmIv1z3xy-Lfw_cs1lJipNcJvS4_B4rVktUGBqDRo2g',
+  verified_at := '2020-12-15 08:09:03.3849+01'
 );
 ROLLBACK TO verify_assertion;
 

@@ -58,21 +58,37 @@ SELECT jsonb_pretty(webauthn.get_credentials(
   challenge := '\x6a19f4c245388de79290f5338196c51e19fc33273afb1891d4e90296bfe06d0b'::bytea,
   user_name := 'alex.p.mueller@example.com',
   user_verification := 'discouraged',
-  timeout := '600001 ms',
+  timeout := '00:05:00',
   relying_party_id := NULL,
   challenge_at := '2020-12-15 08:30:13.733084+01'
 ));
-ERROR:  new row for relation "assertion_challenges" violates check constraint "reasonable_timeout"
-DETAIL:  Failing row contains (\x6a19f4c245388de79290f5338196c51e19fc33273afb1891d4e90296bfe06d..., alex.p.mueller@example.com, discouraged, @ 10 mins 0.001 secs, null, Mon Dec 14 23:30:13.733084 2020 PST, null, null, null).
-CONTEXT:  SQL function "get_credentials" statement 1
+                                                  jsonb_pretty                                                   
+-----------------------------------------------------------------------------------------------------------------
+ {                                                                                                              +
+     "publicKey": {                                                                                             +
+         "timeout": 300000,                                                                                     +
+         "challenge": "ahn0wkU4jeeSkPUzgZbFHhn8Myc6-xiR1OkClr_gbQs",                                            +
+         "allowCredentials": [                                                                                  +
+             {                                                                                                  +
+                 "id": "TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA",+
+                 "type": "public-key"                                                                           +
+             }                                                                                                  +
+         ],                                                                                                     +
+         "userVerification": "discouraged"                                                                      +
+     }                                                                                                          +
+ }
+(1 row)
+
 SELECT * FROM webauthn.verify_assertion(
   credential_id := 'TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA',
   credential_type := 'public-key',
   authenticator_data := 'SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MBAAAAAQ',
   client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiYWhuMHdrVTRqZWVTa1BVemdaYkZIaG44TXljNi14aVIxT2tDbHJfZ2JRcyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2V9',
   signature := 'MEQCIBD6sBMH8-7Vm8EWASZe-qtSS1DQF72c3-7E9hsByqjWAiBpxun42by9uk5UeMt1sIQzLVGwviwhcBsVfHyHq7mAVw',
-  user_handle := NULL,
+  user_handle := 'foobarLoJIi9pJA4_WaXCpTPqfO_p0DUIfYEDNs8tE9XyzMmrE0Pfhbtmv5mSZrY3tH5zinbRcjki6mJ2mDhYw',
   verified_at := '2020-12-15 08:30:14.679551+01'
 );
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ERROR:  new row for relation "assertions" violates check constraint "user_handle_equal_or_null"
+DETAIL:  Failing row contains (\x3044022010fab01307f3eed59bc11601265efaab524b50d017bd9cdfeec4f6..., \x6a19f4c245388de79290f5338196c51e19fc33273afb1891d4e90296bfe06d..., \x4ccbdcf5c810e12dc7e3df107b3da29507640d2d36b34b11ef05f289a2ab52..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., \x49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97..., t, f, f, f, 1, \x7b2274797065223a22776562617574686e2e676574222c226368616c6c656e..., http://localhost, f, \xc172e425a2e82488bda49038fd66970a94cfa9f3bfa740d421f6040cdb3cb4..., \x7e8a1b6ab2e82488bda49038fd66970a94cfa9f3bfa740d421f6040cdb3cb4..., Mon Dec 14 23:30:14.679551 2020 PST).
+CONTEXT:  SQL function "verify_assertion" statement 1
 ROLLBACK;

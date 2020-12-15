@@ -1,13 +1,13 @@
 CREATE TABLE webauthn.assertion_challenges (
 challenge bytea NOT NULL,
-relying_party_id text NOT NULL,
 user_name text NOT NULL,
-timeout interval NOT NULL,
 user_verification webauthn.user_verification_requirement NOT NULL,
+timeout interval NOT NULL,
+relying_party_id text,
+challenge_at timestamptz NOT NULL,
 tx_auth_simple text,
 tx_auth_generic_content_type text,
 tx_auth_generic_content bytea,
-challenge_at timestamptz NOT NULL,
 PRIMARY KEY (challenge),
 CONSTRAINT reasonable_timeout CHECK (timeout BETWEEN '30000 ms' AND '600000 ms'),
 CHECK ((tx_auth_generic_content_type IS NULL) = (tx_auth_generic_content IS NULL))

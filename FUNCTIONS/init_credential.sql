@@ -1,30 +1,30 @@
 CREATE OR REPLACE FUNCTION webauthn.init_credential(
   challenge bytea,
-  relying_party_name text,
-  relying_party_id text,
   user_name text,
   user_id bytea,
   user_display_name text,
-  timeout interval DEFAULT '5 minutes'::interval,
+  relying_party_name text,
+  relying_party_id text DEFAULT NULL,
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
+  timeout interval DEFAULT '5 minutes'::interval,
+  challenge_at timestamptz DEFAULT now(),
   tx_auth_simple text DEFAULT NULL,
   tx_auth_generic_content_type text DEFAULT NULL,
-  tx_auth_generic_content bytea DEFAULT NULL,
-  challenge_at timestamptz DEFAULT now()
+  tx_auth_generic_content bytea DEFAULT NULL
 )
 RETURNS jsonb
 LANGUAGE sql
 AS $$
 INSERT INTO webauthn.credential_challenges
-       (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content, challenge_at)
-VALUES (challenge, relying_party_name, relying_party_id, user_name, user_id, user_display_name, timeout, user_verification, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content, challenge_at)
+       (challenge, user_name, user_id, user_display_name, relying_party_name, relying_party_id, user_verification, timeout, challenge_at, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
+VALUES (challenge, user_name, user_id, user_display_name, relying_party_name, relying_party_id, user_verification, timeout, challenge_at, tx_auth_simple, tx_auth_generic_content_type, tx_auth_generic_content)
 RETURNING
 jsonb_build_object(
   'publicKey', jsonb_build_object(
-    'rp', jsonb_build_object(
+    'rp', jsonb_strip_nulls(jsonb_build_object(
       'name', relying_party_name,
       'id', relying_party_id
-    ),
+    )),
     'user', jsonb_build_object(
       'name', user_name,
       'displayName', user_display_name,
