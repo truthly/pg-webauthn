@@ -1,14 +1,14 @@
 CREATE OR REPLACE FUNCTION webauthn.parse_attestation_object(
-OUT rp_id_hash bytea,
-OUT user_present boolean,
-OUT user_verified boolean,
-OUT attested_credential_data_included boolean,
-OUT extension_data_included boolean,
-OUT sign_count bigint,
-OUT aaguid bytea,
-OUT credential_id bytea,
-OUT credential_public_key bytea,
-attestation_object bytea
+  OUT rp_id_hash bytea,
+  OUT user_present boolean,
+  OUT user_verified boolean,
+  OUT attested_credential_data_included boolean,
+  OUT extension_data_included boolean,
+  OUT sign_count bigint,
+  OUT aaguid bytea,
+  OUT credential_id bytea,
+  OUT credential_public_key bytea,
+  attestation_object bytea
 )
 RETURNS record
 IMMUTABLE
