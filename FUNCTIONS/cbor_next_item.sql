@@ -23,8 +23,8 @@ FROM (VALUES(
   (get_byte(cbor,0)>>5)&'111'::bit(3)::integer,
   get_byte(cbor,0)&'11111'::bit(5)::integer,
   get_byte(cbor,1),
-  get_byte(cbor,1)*256 + get_byte(cbor,2),
-  get_byte(cbor,1)*16777216 + get_byte(cbor,2)*65536 + get_byte(cbor,3)*256 + get_byte(cbor,4)
+  (get_byte(cbor,1)<<8) + get_byte(cbor,2),
+  (get_byte(cbor,1)<<24) + (get_byte(cbor,2)<<16) + (get_byte(cbor,3)<<8) + get_byte(cbor,4)
   )) AS data_item_header(major_type, additional_type, uint8_t, uint16_t, uint32_t)
 JOIN LATERAL (VALUES(
   CASE WHEN additional_type <= 23 THEN 0
