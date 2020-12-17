@@ -1,31 +1,21 @@
 CREATE OR REPLACE FUNCTION webauthn.cbor_to_json(cbor bytea)
 RETURNS jsonb
-IMMUTABLE
 LANGUAGE sql
 AS $$
-WITH
-items AS (
-  SELECT * FROM webauthn.decode_cbor(cbor)
-),
-maps AS (
+WITH RECURSIVE x AS (
   SELECT
-    map.item,
-    COALESCE(jsonb_object_agg(
-      COALESCE(keys.text_string,keys.integer_value::text),
-      COALESCE(values.text_string,encode(values.bytes,'base64'))
-    ) FILTER (WHERE values.integer_value IS NULL),jsonb_build_object())
-    ||
-    COALESCE(jsonb_object_agg(
-      COALESCE(keys.text_string,keys.integer_value::text),
-      values.integer_value
-    ) FILTER (WHERE values.integer_value IS NOT NULL),jsonb_build_object())
-    AS key_value_pairs
-  FROM items AS map
-  JOIN generate_series(1,map.map_item_count) AS map_index ON TRUE
-  JOIN items AS keys ON keys.item = map.item+map_index*2-1
-  JOIN items AS values ON values.item = map.item+map_index*2
-  WHERE map.map_item_count > 0
-  GROUP BY map.item
+    0 AS i,
+    cbor_next_item.remainder,
+    jsonb_build_array(cbor_next_item.item) AS items
+  FROM webauthn.cbor_next_item(cbor_to_json.cbor)
+  UNION ALL
+  SELECT
+    x.i + 1,
+    cbor_next_item.remainder,
+    x.items || cbor_next_item.item
+  FROM x
+  JOIN LATERAL webauthn.cbor_next_item(x.remainder) ON TRUE
+  WHERE length(x.remainder) > 0
 )
-SELECT jsonb_agg(key_value_pairs) FROM maps
+SELECT x.items FROM x ORDER BY i DESC LIMIT 1
 $$;

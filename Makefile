@@ -29,7 +29,10 @@ SQL_SRC = \
 	ENUMS/attestation_conveyance_preference.sql \
   FUNCTIONS/base64url_decode.sql \
   FUNCTIONS/base64url_encode.sql \
-  FUNCTIONS/decode_cbor.sql \
+	TYPES/cbor_next.sql \
+	FUNCTIONS/cbor_next_item.sql \
+	FUNCTIONS/cbor_next_array.sql \
+	FUNCTIONS/cbor_next_map.sql \
   FUNCTIONS/cbor_to_json.sql \
   FUNCTIONS/cose_ecdha_to_pkcs.sql \
   FUNCTIONS/decode_asn1_der_signature.sql \
