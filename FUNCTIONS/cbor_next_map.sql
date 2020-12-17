@@ -15,7 +15,7 @@ WITH RECURSIVE x AS (
   SELECT
     map_value.remainder,
     x.item_count-1,
-    x.map || jsonb_build_object(trim('"' FROM map_key.item::text), map_value.item)
+    x.map || jsonb_build_object(map_key.item#>>'{}', map_value.item)
   FROM x
   JOIN LATERAL webauthn.cbor_next_item(x.remainder) AS map_key ON TRUE
   JOIN LATERAL webauthn.cbor_next_item(map_key.remainder) AS map_value ON TRUE
