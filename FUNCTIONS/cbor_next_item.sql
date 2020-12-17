@@ -8,9 +8,9 @@ SELECT
     WHEN major_type = 0 AND additional_type <= 26 THEN ROW(substring(cbor,2+length_bytes), to_jsonb(data_value))::webauthn.cbor_next
     WHEN major_type = 1 AND additional_type <= 26 THEN ROW(substring(cbor,2+length_bytes), to_jsonb(-1-data_value))::webauthn.cbor_next
     WHEN major_type = 2 AND additional_type <= 26 THEN ROW(substring(cbor,2+length_bytes+data_value), to_jsonb(encode(substring(cbor,2+length_bytes,data_value),'base64')))::webauthn.cbor_next
-    WHEN major_type = 3 AND additional_type <= 23 THEN ROW(substring(cbor,2+length_bytes+data_value), to_jsonb(convert_from(substring(cbor,2+length_bytes,data_value),'utf8')))::webauthn.cbor_next
-    WHEN major_type = 4 AND additional_type <= 23 THEN webauthn.cbor_next_array(substring(cbor,2+length_bytes), data_value)
-    WHEN major_type = 5 AND additional_type <= 23 THEN webauthn.cbor_next_map(substring(cbor,2+length_bytes), data_value)
+    WHEN major_type = 3 AND additional_type <= 26 THEN ROW(substring(cbor,2+length_bytes+data_value), to_jsonb(convert_from(substring(cbor,2+length_bytes,data_value),'utf8')))::webauthn.cbor_next
+    WHEN major_type = 4 AND additional_type <= 26 THEN webauthn.cbor_next_array(substring(cbor,2+length_bytes), data_value)
+    WHEN major_type = 5 AND additional_type <= 26 THEN webauthn.cbor_next_map(substring(cbor,2+length_bytes), data_value)
     WHEN major_type = 7 AND additional_type  = 20 THEN ROW(substring(cbor,2+0), to_jsonb(false))::webauthn.cbor_next
     WHEN major_type = 7 AND additional_type  = 21 THEN ROW(substring(cbor,2+0), to_jsonb(true))::webauthn.cbor_next
     WHEN major_type = 7 AND additional_type  = 22 THEN ROW(substring(cbor,2+0), 'null'::jsonb)::webauthn.cbor_next
