@@ -2,6 +2,7 @@ EXTENSION = webauthn
 DATA = webauthn--1.0.sql
 REGRESS = ok \
 	ok_user_handle \
+	ok_cbor_to_json \
 	error_assertions_check_user_verified_or_not_required \
 	error_assertions_check_reasonable_timeout \
 	error_assertions_check_verified_before_timeout \
