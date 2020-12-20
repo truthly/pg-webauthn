@@ -20,35 +20,36 @@ SELECT jsonb_pretty(webauthn.init_credential(
   relying_party_name := %5$s,
   relying_party_id := %6$s,
   user_verification := '%7$s',
-  timeout := '%8$s',
-  challenge_at := '%9$s'
+  attestation := '%8$s',
+  timeout := '%9$s',
+  challenge_at := '%10$s'
 ));
 
 SELECT * FROM webauthn.make_credential(
-  credential_id := '%10$s',
-  credential_type := '%11$s',
-  attestation_object := '%12$s',
-  client_data_json := '%13$s',
-  credential_at := '%14$s'
+  credential_id := '%11$s',
+  credential_type := '%12$s',
+  attestation_object := '%13$s',
+  client_data_json := '%14$s',
+  credential_at := '%15$s'
 );
 
 SELECT jsonb_pretty(webauthn.get_credentials(
-  challenge := '%15$s'::bytea,
-  user_name := %16$s,
-  user_verification := '%17$s',
-  timeout := '%18$s',
-  relying_party_id := %19$s,
-  challenge_at := '%20$s'
+  challenge := '%16$s'::bytea,
+  user_name := %17$s,
+  user_verification := '%18$s',
+  timeout := '%19$s',
+  relying_party_id := %20$s,
+  challenge_at := '%21$s'
 ));
 
 SELECT * FROM webauthn.verify_assertion(
-  credential_id := '%21$s',
-  credential_type := '%22$s',
-  authenticator_data := '%23$s',
-  client_data_json := '%24$s',
-  signature := '%25$s',
-  user_handle := %26$s,
-  verified_at := '%27$s'
+  credential_id := '%22$s',
+  credential_type := '%23$s',
+  authenticator_data := '%24$s',
+  client_data_json := '%25$s',
+  signature := '%26$s',
+  user_handle := %27$s,
+  verified_at := '%28$s'
 );
 
 ROLLBACK;$SQL$,
@@ -59,6 +60,7 @@ quote_literal(credential_challenges.user_display_name),
 quote_literal(credential_challenges.relying_party_name),
 quote_nullable(credential_challenges.relying_party_id),
 credential_challenges.user_verification,
+credential_challenges.attestation,
 credential_challenges.timeout,
 credential_challenges.challenge_at,
 webauthn.base64url_encode(credentials.credential_id),
