@@ -2,7 +2,6 @@ EXTENSION = webauthn
 DATA = webauthn--1.0.sql
 REGRESS = ok \
 	ok_user_handle \
-	ok_cbor_to_json \
 	error_assertions_check_user_verified_or_not_required \
 	error_assertions_check_reasonable_timeout \
 	error_assertions_check_verified_before_timeout \
@@ -30,11 +29,6 @@ SQL_SRC = \
 	ENUMS/attestation_conveyance_preference.sql \
   FUNCTIONS/base64url_decode.sql \
   FUNCTIONS/base64url_encode.sql \
-	TYPES/cbor_next.sql \
-	FUNCTIONS/cbor_next_item.sql \
-	FUNCTIONS/cbor_next_array.sql \
-	FUNCTIONS/cbor_next_map.sql \
-  FUNCTIONS/cbor_to_json.sql \
   FUNCTIONS/cose_ecdha_to_pkcs.sql \
   FUNCTIONS/decode_asn1_der_signature.sql \
   FUNCTIONS/from_utf8.sql \

@@ -21,6 +21,6 @@ SELECT
   substring(authenticator_data,38,16),
   substring(authenticator_data,56,(get_byte(authenticator_data,53)<<8) + get_byte(authenticator_data,54)),
   substring(authenticator_data,56+(get_byte(authenticator_data,53)<<8) + get_byte(authenticator_data,54))
-FROM decode(webauthn.cbor_to_json(attestation_object)->0->>'authData','base64') AS authenticator_data
+FROM decode(cbor.to_jsonb(cbor := attestation_object, encode_binary_format := 'base64')->>'authData','base64') AS authenticator_data
 CROSS JOIN webauthn.parse_authenticator_data(authenticator_data)
 $$;

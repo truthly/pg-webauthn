@@ -39,11 +39,15 @@ or using Built-in sensors, as seen in the [Chrome] example below.
 
 [pguecc] for the ECDSA cryptographic [ecdsa_verify()] function.
 
+[🧬🐘cbor] for the [cbor.to_jsonb()] function.
+
 [pgcrypto]: https://www.postgresql.org/docs/current/pgcrypto.html
 [digest()]: https://www.postgresql.org/docs/current/pgcrypto.html#id-1.11.7.34.6
 [gen_random_bytes()]: https://www.postgresql.org/docs/current/pgcrypto.html#id-1.11.7.34.10
 [pguecc]: https://github.com/ameensol/pg-ecdsa
 [ecdsa_verify()]: https://github.com/ameensol/pg-ecdsa#ecdsa_verifypublic_key-textbytea-input_data-bytea-signature-textbytea-hash_func-text-curve_name-text
+[🧬🐘cbor]: https://github.com/truthly/pg-cbor
+[cbor.to_jsonb()]: https://github.com/truthly/pg-cbor#to-jsonb
 
 <h2 id="installation">3. Installation</h2>
 
@@ -52,7 +56,7 @@ Install the `webauthn` extension with:
     $ git clone https://github.com/truthly/pg-webauthn.git
     $ cd pg-webauthn
     $ make
-    $ make install
+    $ sudo make install
     $ make installcheck
 
 Note that the Postgres development tools and a C compiler must be installed
@@ -69,6 +73,7 @@ Use with:
     # CREATE EXTENSION webauthn CASCADE;
     NOTICE:  installing required extension "pguecc"
     NOTICE:  installing required extension "pgcrypto"
+    NOTICE:  installing required extension "cbor"
     CREATE EXTENSION;
 
 <h2 id="api">5. API</h2>
