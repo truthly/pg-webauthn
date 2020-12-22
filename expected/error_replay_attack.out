@@ -14,7 +14,7 @@
 -- See: https://www.postgresql.org/docs/current/sql-rollback-to.html
 --
 BEGIN;
-CREATE EXTENSION webauthn CASCADE;
+CREATE EXTENSION IF NOT EXISTS webauthn CASCADE;
 NOTICE:  installing required extension "pguecc"
 NOTICE:  installing required extension "pgcrypto"
 NOTICE:  installing required extension "cbor"

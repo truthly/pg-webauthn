@@ -10,7 +10,7 @@ AS $$
 --
 SELECT format($SQL$BEGIN;
 
-CREATE EXTENSION webauthn CASCADE;
+CREATE EXTENSION IF NOT EXISTS webauthn CASCADE;
 
 SELECT jsonb_pretty(webauthn.init_credential(
   challenge := '%1$s'::bytea,

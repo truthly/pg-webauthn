@@ -1,6 +1,6 @@
 BEGIN;
 
-CREATE EXTENSION webauthn CASCADE;
+CREATE EXTENSION IF NOT EXISTS webauthn CASCADE;
 
 SELECT jsonb_pretty(webauthn.init_credential(
   challenge := '\x160cfbab84567e395818dcfa8715d09a96c06423897e43aa3f883133fffeff43'::bytea,

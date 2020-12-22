@@ -70,7 +70,7 @@ if not, the error will mention "could not open extension control file
 Use with:
 
     $ psql
-    # CREATE EXTENSION webauthn CASCADE;
+    # CREATE EXTENSION IF NOT EXISTS webauthn CASCADE;
     NOTICE:  installing required extension "pguecc"
     NOTICE:  installing required extension "pgcrypto"
     NOTICE:  installing required extension "cbor"
