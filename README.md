@@ -128,7 +128,7 @@ If [relying_party_id] is omitted the user agent will set it to the [effective do
 [PublicKeyCredentialCreationOptions]: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions
 [effective domain]: https://html.spec.whatwg.org/multipage/origin.html#concept-origin-effective-domain
 
-❗ [Discoverable Credentials]
+❗ [Discoverable Credentials]<br />
 Setting [require_resident_key] to TRUE tells the Authenticator device it must store the *user.id* value and later set [user_handle] to this value when [webauthn.verify_assertion()] is called during login. This allows for a username-less sign-in, as the user after having signed-up with a username, will not have to enter any username when logging in. This concept is know as [Discoverable Credentials], and also affects [webauthn.get_credentials()] which should then be called without any [user_name].
 
 [Discoverable Credentials]: https://www.w3.org/TR/webauthn-2/#client-side-discoverable-credential
@@ -233,7 +233,7 @@ where the only key, `publicKey`, contains a [PublicKeyCredentialRequestOptions] 
 [navigator.credentials.get()]: https://www.w3.org/TR/credential-management-1/#dom-credentialscontainer-get
 [PublicKeyCredentialRequestOptions]: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions
 
-❗ [Discoverable Credentials]
+❗ [Discoverable Credentials]<br />
 To allow a username-less sign-in flow, the [user_name] input parameter can be skipped during sign-in,
 but only if [require_resident_key] was set to TRUE in the call to [webauthn.init_credential()]
 during sign-up when credentials were created. Skipping [user_name] or passing a NULL value as input,
@@ -287,7 +287,7 @@ The [challenge] can only be used once to prevent replay attacks.
 
 If the [signature] could be successfully verified, the function stores the verified assertion to the [webauthn.assertions](https://github.com/truthly/pg-webauthn/blob/master/TABLES/assertions.sql#L1) table and returns the [user_id] bytea value for the corresponding credential, or `NULL` to indicate failure.
 
-❗ [Discoverable Credentials]
+❗ [Discoverable Credentials]<br />
 In a username-less sign-in flow, since no [user_name] is specified in the previous [webauthn.get_credentials()] call, the [user_handle] input parameter to [webauthn.verify_assertion()] is used instead to know which user is logging in. Its value comes from the user agent's `navigator.credentials.get().response.userHandle` field, which is always present, but can be `NULL`, if [require_resident_key] was set to `FALSE` in the call to [webauthn.init_credential()] when the credential was created, since that means the Authenticator doesn't need to store the *user.id* value.
 
 ```sql
