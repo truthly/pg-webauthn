@@ -15,24 +15,20 @@ WITH store_assertion_challenge AS (
   VALUES (challenge, user_name, user_verification, timeout, relying_party_id, challenge_at)
   RETURNING TRUE
 )
-SELECT jsonb_build_object(
-  'publicKey', jsonb_strip_nulls(jsonb_build_object(
+SELECT jsonb_strip_nulls(jsonb_build_object(
+  'publicKey', jsonb_build_object(
     'userVerification', get_credentials.user_verification,
-    'allowCredentials', jsonb_agg(
+    'allowCredentials', COALESCE(jsonb_agg(
       jsonb_build_object(
         'type', credentials.credential_type,
         'id', webauthn.base64url_encode(credentials.credential_id)
       )
-    ORDER BY credentials.credential_id),
+    ORDER BY credentials.credential_id),jsonb_build_array()),
     'timeout', (extract(epoch from get_credentials.timeout)*1000)::bigint,
     'challenge', webauthn.base64url_encode(get_credentials.challenge),
     'rpId', get_credentials.relying_party_id
-  ))
-)
-FROM store_assertion_challenge
-LEFT JOIN webauthn.credentials ON credentials.user_name = get_credentials.user_name
-GROUP BY get_credentials.challenge,
-         get_credentials.relying_party_id,
-         get_credentials.timeout,
-         get_credentials.user_verification
+  )
+))
+FROM webauthn.credentials
+WHERE credentials.user_name = get_credentials.user_name
 $$;
