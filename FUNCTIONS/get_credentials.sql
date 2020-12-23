@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION webauthn.get_credentials(
   challenge bytea,
-  user_name text,
+  user_name text DEFAULT NULL,
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
   timeout interval DEFAULT '5 minutes'::interval,
   relying_party_id text DEFAULT NULL,
@@ -30,8 +30,7 @@ SELECT jsonb_build_object(
   ))
 )
 FROM store_assertion_challenge
-CROSS JOIN webauthn.credentials
-WHERE credentials.user_name = get_credentials.user_name
+LEFT JOIN webauthn.credentials ON credentials.user_name = get_credentials.user_name
 GROUP BY get_credentials.challenge,
          get_credentials.relying_party_id,
          get_credentials.timeout,

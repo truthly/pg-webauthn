@@ -1,6 +1,6 @@
 CREATE TABLE webauthn.assertion_challenges (
 challenge bytea NOT NULL,
-user_name text NOT NULL,
+user_name text,
 user_verification webauthn.user_verification_requirement NOT NULL,
 timeout interval NOT NULL,
 relying_party_id text,

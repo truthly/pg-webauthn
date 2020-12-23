@@ -5,6 +5,7 @@ CREATE OR REPLACE FUNCTION webauthn.init_credential(
   user_display_name text,
   relying_party_name text,
   relying_party_id text DEFAULT NULL,
+  require_resident_key boolean DEFAULT FALSE,
   user_verification webauthn.user_verification_requirement DEFAULT 'preferred',
   attestation webauthn.attestation_conveyance_preference DEFAULT 'none',
   timeout interval DEFAULT '5 minutes'::interval,
@@ -36,7 +37,7 @@ jsonb_build_object(
       )
     ),
     'authenticatorSelection', jsonb_build_object(
-      'requireResidentKey', false,
+      'requireResidentKey', require_resident_key,
       'userVerification', user_verification
     ),
     'timeout', (extract(epoch from timeout)*1000)::bigint,

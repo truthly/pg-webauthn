@@ -35,8 +35,8 @@ SELECT
   decoded_input.verified_at
 FROM decoded_input
 JOIN webauthn.assertion_challenges ON assertion_challenges.challenge = decoded_input.challenge
-JOIN webauthn.credentials ON credentials.credential_id   = decoded_input.credential_id
-                         AND credentials.credential_type = decoded_input.credential_type
-                         AND credentials.user_name       = assertion_challenges.user_name
+JOIN webauthn.credentials ON  credentials.credential_id   = decoded_input.credential_id
+                         AND  credentials.credential_type = decoded_input.credential_type
+                         AND (credentials.user_name      <> assertion_challenges.user_name) IS NOT TRUE
 RETURNING assertions.user_id
 $$;
