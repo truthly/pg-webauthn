@@ -24,11 +24,14 @@ used by modern browsers for credential creation and assertion
 using a [U2F Token], like those provided by [Yubico],
 or using Built-in sensors, as seen in the [Chrome] example below.
 
+For a full-stack demo on how to use this project, see the [🦄🐘uniphant] project.
+
 [PostgreSQL]: https://www.postgresql.org/
 [WebAuthn]: https://en.wikipedia.org/wiki/WebAuthn
 [U2F Token]: https://en.wikipedia.org/wiki/Universal_2nd_Factor
 [Yubico]: https://www.yubico.com/
 [Chrome]: https://www.google.com/chrome/
+[🦄🐘uniphant]: https://github.com/truthly/uniphant
 
 ![Verify your identity](https://i.imgur.com/1KXVbTb.png)
 ![Touch ID](https://i.imgur.com/KPF6vEg.png)
