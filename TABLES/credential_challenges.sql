@@ -9,6 +9,7 @@ user_verification webauthn.user_verification_requirement NOT NULL,
 attestation webauthn.attestation_conveyance_preference NOT NULL,
 timeout interval NOT NULL,
 challenge_at timestamptz NOT NULL,
+require_resident_key boolean NOT NULL DEFAULT FALSE,
 PRIMARY KEY (challenge),
 CONSTRAINT reasonable_timeout CHECK (timeout BETWEEN '30000 ms' AND '600000 ms')
 );
@@ -27,3 +28,4 @@ COMMENT ON COLUMN webauthn.credential_challenges.timeout IS 'https://www.w3.org/
 COMMENT ON COLUMN webauthn.credential_challenges.relying_party_name IS 'https://www.w3.org/TR/webauthn-2/#dictionary-rp-credential-params';
 COMMENT ON COLUMN webauthn.credential_challenges.relying_party_id IS 'https://www.w3.org/TR/webauthn-2/#relying-party-identifier';
 COMMENT ON COLUMN webauthn.credential_challenges.challenge_at IS 'Timestamp of when the challenge was created by webauthn.init_credential()';
+COMMENT ON COLUMN webauthn.credential_challenges.require_resident_key IS 'https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-requireresidentkey';
