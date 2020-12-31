@@ -1,5 +1,5 @@
 EXTENSION = webauthn
-DATA = webauthn--1.1.sql webauthn--1.0--1.1.sql
+DATA = webauthn--1.2.sql webauthn--1.1--1.2.sql
 REGRESS = ok \
 	ok_user_handle \
 	error_assertions_check_user_verified_or_not_required \
@@ -13,13 +13,13 @@ REGRESS = ok \
 	error_replay_attack \
 	error_hijack_attack
 
-EXTRA_CLEAN = webauthn--1.1.sql webauthn--1.0--1.1.sql
+EXTRA_CLEAN = webauthn--1.2.sql webauthn--1.1--1.2.sql
 
 PG_CONFIG = pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
-all: webauthn--1.1.sql webauthn--1.0--1.1.sql
+all: webauthn--1.2.sql webauthn--1.1--1.2.sql
 
 SQL_SRC = \
   complain_header.sql \
@@ -45,19 +45,18 @@ SQL_SRC = \
   TABLES/assertions.sql \
 	FUNCTIONS/get_credential_creation_options.sql \
   FUNCTIONS/init_credential.sql \
-  FUNCTIONS/make_credential.sql \
+  FUNCTIONS/store_credential.sql \
   FUNCTIONS/get_credentials.sql \
   FUNCTIONS/verify_assertion.sql \
 	FUNCTIONS/generate_test.sql
 
-webauthn--1.1.sql: $(SQL_SRC)
+webauthn--1.2.sql: $(SQL_SRC)
 	cat $^ > $@
 
 SQL_SRC = \
   complain_header.sql \
-	FUNCTIONS/get_credential_creation_options.sql \
-  FUNCTIONS/init_credential.sql \
-  1.0--1.1.sql
+  FUNCTIONS/store_credential.sql \
+  1.1--1.2.sql
 
-webauthn--1.0--1.1.sql: $(SQL_SRC)
+webauthn--1.1--1.2.sql: $(SQL_SRC)
 	cat $^ > $@

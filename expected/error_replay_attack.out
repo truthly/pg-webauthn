@@ -74,7 +74,7 @@ ERROR:  duplicate key value violates unique constraint "credential_challenges_pk
 DETAIL:  Key (challenge)=(\x30d5843dc347fe7d9328675e964b7efded1f3112bb0f928e6fb147fc86c564ba) already exists.
 CONTEXT:  SQL function "init_credential" statement 1
 ROLLBACK TO init_credential;
-SELECT * FROM webauthn.make_credential(
+SELECT * FROM webauthn.store_credential(
   credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVkBEUmWDeWIDoxodDQXD2R2YFuP5K65ooYyx5lc87qDHZdjRV_YYQytzgACNbzGCmSLCyXx8FUDAI0Bc0FEwQ4VpgZpE6sSmHWw5niR-0guL2vLy8LDZ89B_vXaCUilANFf7scFDZWZBWlFZTcDoK79dwpuegLZJLLn-jRnao7s7B2eazwrQayKq9bHda1Q-fRrwZrpBZuQS-xRc6n2KRn2_gN5h5PPOnSHa4CXHx7NrK6qMH-4xDIHmQFXBGGSFkSbNAKXT3ulAQIDJiABIVggxMJIqQI-xxUSsJGR9HIbIZHKIiN-alA9B2SdzIzjzwkiWCCHOhTTOTy3-H2rNbbfs8jojm8AeaNYEfQCplT5aYjwtA',
@@ -86,8 +86,8 @@ SELECT * FROM webauthn.make_credential(
  \x927f90c2323748d1e2c24c39af7d240423f5d1d0fbed1d77ccfe372b2d67ab244f988bf5cf7c72f8b7f0fdcb359498a935c26f4b8fc1e2b564b54181a83468da
 (1 row)
 
-SAVEPOINT make_credential;
-SELECT * FROM webauthn.make_credential(
+SAVEPOINT store_credential;
+SELECT * FROM webauthn.store_credential(
   credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVkBEUmWDeWIDoxodDQXD2R2YFuP5K65ooYyx5lc87qDHZdjRV_YYQytzgACNbzGCmSLCyXx8FUDAI0Bc0FEwQ4VpgZpE6sSmHWw5niR-0guL2vLy8LDZ89B_vXaCUilANFf7scFDZWZBWlFZTcDoK79dwpuegLZJLLn-jRnao7s7B2eazwrQayKq9bHda1Q-fRrwZrpBZuQS-xRc6n2KRn2_gN5h5PPOnSHa4CXHx7NrK6qMH-4xDIHmQFXBGGSFkSbNAKXT3ulAQIDJiABIVggxMJIqQI-xxUSsJGR9HIbIZHKIiN-alA9B2SdzIzjzwkiWCCHOhTTOTy3-H2rNbbfs8jojm8AeaNYEfQCplT5aYjwtA',
@@ -96,8 +96,8 @@ SELECT * FROM webauthn.make_credential(
 );
 ERROR:  duplicate key value violates unique constraint "credentials_pkey"
 DETAIL:  Key (credential_id)=(\x01734144c10e15a6066913ab129875b0e67891fb482e2f6bcbcbc2c367cf41fef5da0948a500d15feec7050d9599056945653703a0aefd770a6e7a02d924b2e7fa34676a8eecec1d9e6b3c2b41ac8aabd6c775ad50f9f46bc19ae9059b904bec5173a9f62919f6fe03798793cf3a74876b80971f1ecdacaeaa307fb8c4320799015704619216449b3402974f7b) already exists.
-CONTEXT:  SQL function "make_credential" statement 1
-ROLLBACK TO make_credential;
+CONTEXT:  SQL function "store_credential" statement 1
+ROLLBACK TO store_credential;
 SELECT jsonb_pretty(webauthn.get_credentials(
   challenge := '\x014fc58eef9713a5c89e6094d5847faf39dd05efac8713a6024c5812e9178599'::bytea,
   user_name := 'alex.p.mueller@example.com',

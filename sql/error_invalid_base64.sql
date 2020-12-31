@@ -12,7 +12,7 @@ SELECT jsonb_pretty(webauthn.init_credential(
   timeout := '2 minutes'::interval
 ));
 
-SELECT * FROM webauthn.make_credential(
+SELECT * FROM webauthn.store_credential(
   credential_id := 'ASiVjgqKJgvSawjRv_bjFR6l9uOgpLJ9jaZbGkxytC3vQzq21tlSuPgAnvQF6B0BLK0dujjrqvK3oBktYP8FEdYOZz8LK8PjiyDGXiCrlSYDy58JILDNJIi-n7973HgHhYiDgN_iBCTfX9Y',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjvSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFX9SYD63OAAI1vMYKZIsLJfHwVQMAawEolY4KiiYL0msI0b_24xUepfbjoKSyfY2mWxpMcrQt70M6ttbZUrj4AJ70BegdASytHbo466ryt6AZLWD_BRHWDmc_CyvD44sgxl4gq5UmA8ufCSCwzSSIvp-_e9x4B4WIg4Df4gQk31_WpQECAyYgASFYIFYGLzqrkNKDty3WMhTXQzjWxIXZekODNhjBB8MjZHgpIlgg1wRbPHszTjstSPn7dPAqVDmO0krRy8rWpTjJDAeOFVY',

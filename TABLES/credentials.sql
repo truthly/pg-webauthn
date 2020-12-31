@@ -47,7 +47,7 @@ ALTER TABLE webauthn.credentials ADD UNIQUE (user_name, user_id, challenge);
 ALTER TABLE webauthn.credential_challenges ADD UNIQUE (user_name, user_id, challenge);
 ALTER TABLE webauthn.credentials ADD FOREIGN KEY (user_name, user_id, challenge) REFERENCES webauthn.credential_challenges (user_name, user_id, challenge);
 
-COMMENT ON TABLE webauthn.credentials IS 'Used by webauthn.make_credential() to store credentials.';
+COMMENT ON TABLE webauthn.credentials IS 'Used by webauthn.store_credential() to store credentials.';
 
 COMMENT ON COLUMN webauthn.credentials.credential_id IS 'https://www.w3.org/TR/webauthn-2/#credential-id';
 COMMENT ON COLUMN webauthn.credentials.challenge IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-challenge';
@@ -65,4 +65,4 @@ COMMENT ON COLUMN webauthn.credentials.client_data_json IS 'https://www.w3.org/T
 COMMENT ON COLUMN webauthn.credentials.origin IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-origin';
 COMMENT ON COLUMN webauthn.credentials.cross_origin IS 'https://www.w3.org/TR/webauthn-2/#dom-collectedclientdata-crossorigin';
 COMMENT ON COLUMN webauthn.credentials.user_id IS 'https://www.w3.org/TR/webauthn-2/#dom-publickeycredentialuserentity-id';
-COMMENT ON COLUMN webauthn.credentials.credential_at IS 'Timestamp of when the credential was created by webauthn.make_credential()';
+COMMENT ON COLUMN webauthn.credentials.credential_at IS 'Timestamp of when the credential was created by webauthn.store_credential()';

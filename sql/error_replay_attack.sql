@@ -44,7 +44,7 @@ SELECT jsonb_pretty(webauthn.init_credential(
 ));
 ROLLBACK TO init_credential;
 
-SELECT * FROM webauthn.make_credential(
+SELECT * FROM webauthn.store_credential(
   credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVkBEUmWDeWIDoxodDQXD2R2YFuP5K65ooYyx5lc87qDHZdjRV_YYQytzgACNbzGCmSLCyXx8FUDAI0Bc0FEwQ4VpgZpE6sSmHWw5niR-0guL2vLy8LDZ89B_vXaCUilANFf7scFDZWZBWlFZTcDoK79dwpuegLZJLLn-jRnao7s7B2eazwrQayKq9bHda1Q-fRrwZrpBZuQS-xRc6n2KRn2_gN5h5PPOnSHa4CXHx7NrK6qMH-4xDIHmQFXBGGSFkSbNAKXT3ulAQIDJiABIVggxMJIqQI-xxUSsJGR9HIbIZHKIiN-alA9B2SdzIzjzwkiWCCHOhTTOTy3-H2rNbbfs8jojm8AeaNYEfQCplT5aYjwtA',
@@ -52,15 +52,15 @@ SELECT * FROM webauthn.make_credential(
   credential_at := '2020-12-15 08:09:00.20485+01'
 );
 
-SAVEPOINT make_credential;
-SELECT * FROM webauthn.make_credential(
+SAVEPOINT store_credential;
+SELECT * FROM webauthn.store_credential(
   credential_id := 'AXNBRMEOFaYGaROrEph1sOZ4kftILi9ry8vCw2fPQf712glIpQDRX-7HBQ2VmQVpRWU3A6Cu_XcKbnoC2SSy5_o0Z2qO7Owdnms8K0GsiqvWx3WtUPn0a8Ga6QWbkEvsUXOp9ikZ9v4DeYeTzzp0h2uAlx8ezayuqjB_uMQyB5kBVwRhkhZEmzQCl097',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVkBEUmWDeWIDoxodDQXD2R2YFuP5K65ooYyx5lc87qDHZdjRV_YYQytzgACNbzGCmSLCyXx8FUDAI0Bc0FEwQ4VpgZpE6sSmHWw5niR-0guL2vLy8LDZ89B_vXaCUilANFf7scFDZWZBWlFZTcDoK79dwpuegLZJLLn-jRnao7s7B2eazwrQayKq9bHda1Q-fRrwZrpBZuQS-xRc6n2KRn2_gN5h5PPOnSHa4CXHx7NrK6qMH-4xDIHmQFXBGGSFkSbNAKXT3ulAQIDJiABIVggxMJIqQI-xxUSsJGR9HIbIZHKIiN-alA9B2SdzIzjzwkiWCCHOhTTOTy3-H2rNbbfs8jojm8AeaNYEfQCplT5aYjwtA',
   client_data_json := 'eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiTU5XRVBjTkhfbjJUS0dkZWxrdC1fZTBmTVJLN0Q1S09iN0ZIX0liRlpMbyIsIm9yaWdpbiI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJjcm9zc09yaWdpbiI6ZmFsc2UsIm90aGVyX2tleXNfY2FuX2JlX2FkZGVkX2hlcmUiOiJkbyBub3QgY29tcGFyZSBjbGllbnREYXRhSlNPTiBhZ2FpbnN0IGEgdGVtcGxhdGUuIFNlZSBodHRwczovL2dvby5nbC95YWJQZXgifQ',
   credential_at := '2020-12-15 08:09:00.20485+01'
 );
-ROLLBACK TO make_credential;
+ROLLBACK TO store_credential;
 
 SELECT jsonb_pretty(webauthn.get_credentials(
   challenge := '\x014fc58eef9713a5c89e6094d5847faf39dd05efac8713a6024c5812e9178599'::bytea,

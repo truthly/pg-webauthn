@@ -25,7 +25,7 @@ SELECT jsonb_pretty(webauthn.init_credential(
   challenge_at := '%10$s'
 ));
 
-SELECT * FROM webauthn.make_credential(
+SELECT * FROM webauthn.store_credential(
   credential_id := '%11$s',
   credential_type := '%12$s',
   attestation_object := '%13$s',

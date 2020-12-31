@@ -27,7 +27,7 @@ SELECT jsonb_pretty(webauthn.init_credential(
 ));
 
 -- Alice
-SELECT * FROM webauthn.make_credential(
+SELECT * FROM webauthn.store_credential(
   credential_id := 'bUbZdS9skR2dQBTgiQ1EBMxGxTkkkyCVytqnGpkeLF-FG-fjVMP50-aTEOu_kBvegtDz6IC2ISUJ7OPDnolN2w',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjESZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQG1G2XUvbJEdnUAU4IkNRATMRsU5JJMglcrapxqZHixfhRvn41TD-dPmkxDrv5Ab3oLQ8-iAtiElCezjw56JTdulAQIDJiABIVggQm7waBO4Gb1_EHHoPULS3qN2aM8RRP58alCkfvhc6iAiWCAd7SkDznHs8hlawekX26FwinCbr6JiR23Yu9X6NckfSQ',
@@ -36,7 +36,7 @@ SELECT * FROM webauthn.make_credential(
 );
 
 -- Bob
-SELECT * FROM webauthn.make_credential(
+SELECT * FROM webauthn.store_credential(
   credential_id := 'gEH1WKLdwQAZWOF6qQvYqsIoHXZWGFQWueQ8BgfnoAkKy6q8uhx1K21is34td03hb699SWet336gIw2KhmbDGw',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjESZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIBB9Vii3cEAGVjheqkL2KrCKB12VhhUFrnkPAYH56AJCsuqvLocdSttYrN-LXdN4W-vfUlnrd9-oCMNioZmwxulAQIDJiABIVgg3gD_CNjxdR6Ur-2xfeqxzusT8FrXYZPI8Ce5Z7Hqk5QiWCDUfcMaNwWtL_0DAMJmSqhna4sNGRYAK2_h89Lg04oE9A',

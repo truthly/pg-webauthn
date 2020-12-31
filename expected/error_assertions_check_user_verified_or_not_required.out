@@ -43,7 +43,7 @@ SELECT jsonb_pretty(webauthn.init_credential(
  }
 (1 row)
 
-SELECT * FROM webauthn.make_credential(
+SELECT * FROM webauthn.store_credential(
   credential_id := 'TMvc9cgQ4S3H498Qez2ilQdkDS02s0sR7wXyiaKrUphXQRNqiP1pfzoBPsEey8wjHDUXh_A-91zqP_H0bkeohA',
   credential_type := 'public-key',
   attestation_object := 'o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjESZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEzL3PXIEOEtx-PfEHs9opUHZA0tNrNLEe8F8omiq1KYV0ETaoj9aX86AT7BHsvMIxw1F4fwPvdc6j_x9G5HqISlAQIDJiABIVggf6kt0GZu7nwT3be2JJsMj5-6Q2CFfE4V0vxjSitaH48iWCDbmYOzGUadNecZo7k-GsKShUzT_yrVCJhoGwoy_7y8ag',
