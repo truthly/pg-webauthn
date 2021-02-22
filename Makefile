@@ -56,6 +56,7 @@ webauthn--1.2.sql: $(SQL_SRC)
 SQL_SRC = \
   complain_header.sql \
   FUNCTIONS/store_credential.sql \
+	FUNCTIONS/generate_test.sql \
   1.1--1.2.sql
 
 webauthn--1.1--1.2.sql: $(SQL_SRC)

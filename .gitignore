@@ -1,5 +1,4 @@
 .DS_Store
-webauthn--*.sql
 regression.diffs
 regression.out
 results
