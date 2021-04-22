@@ -115,12 +115,11 @@ JOIN webauthn.assertions ON assertions.credential_id = credentials.credential_id
 JOIN webauthn.assertion_challenges ON assertion_challenges.challenge = assertions.challenge
 ORDER BY credential_challenges.challenge_at, assertion_challenges.challenge_at
 $$;
-DROP FUNCTION webauthn.make_credential(
-  credential_id text,
-  credential_type webauthn.credential_type,
-  attestation_object text,
-  client_data_json text,
-  credential_at timestamptz
-);
-COMMENT ON TABLE webauthn.credentials IS 'Used by webauthn.store_credential() to store credentials.';
-COMMENT ON COLUMN webauthn.credentials.credential_at IS 'Timestamp of when the credential was created by webauthn.store_credential()';
+ALTER TABLE webauthn.assertions DROP CONSTRAINT verified_signature;
+ALTER TABLE webauthn.assertions
+ADD CONSTRAINT verified_signature CHECK (COALESCE(public.ecdsa_verify(
+  public_key := webauthn.credential_public_key(credential_id),
+  input_data := substring(authenticator_data,1,37) || public.digest(client_data_json,'sha256'),
+  signature := webauthn.decode_asn1_der_signature(signature),
+  hash_func := 'sha256',
+  curve_name := 'secp256r1'),FALSE));

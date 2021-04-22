@@ -56,3 +56,4 @@ VALUES (challenge, user_name, user_id, user_display_name, relying_party_name, re
 RETURNING webauthn.get_credential_creation_options(challenge)
 $$;
 ALTER TABLE webauthn.credential_challenges ADD COLUMN require_resident_key boolean NOT NULL DEFAULT FALSE;
+COMMENT ON COLUMN webauthn.credential_challenges.require_resident_key IS 'https://www.w3.org/TR/webauthn-2/#dom-authenticatorselectioncriteria-requireresidentkey';
