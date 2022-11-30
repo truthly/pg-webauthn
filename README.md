@@ -99,7 +99,6 @@ Input Parameter                | Type                                           
 [relying_party_id]             | text (*[valid domain string]*)                        | NULL
 [require_resident_key]         | boolean                                               | FALSE
 [user_verification]            | [webauthn.user_verification_requirement]              | 'preferred'
-[user_verification]            | [webauthn.user_verification_requirement]              | 'preferred'
 [attestation]                  | [webauthn.webauthn.attestation_conveyance_preference] | 'none'
 [timeout]                      | interval                                              | '5 minutes'
 
