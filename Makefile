@@ -6,10 +6,13 @@ DATA = \
 	webauthn--1.1--1.2.sql \
 	webauthn--1.2.sql \
 	webauthn--1.2--1.3.sql \
-	webauthn--1.3.sql
+	webauthn--1.3.sql \
+	webauthn--1.3--1.4.sql \
+	webauthn--1.4.sql
 
 REGRESS = ok \
 	ok_user_handle \
+	ok_ecdsa_verify \
 	error_assertions_check_user_verified_or_not_required \
 	error_assertions_check_reasonable_timeout \
 	error_assertions_check_verified_before_timeout \
@@ -21,13 +24,13 @@ REGRESS = ok \
 	error_replay_attack \
 	error_hijack_attack
 
-EXTRA_CLEAN = webauthn--1.3.sql webauthn--1.2--1.3.sql
+EXTRA_CLEAN = webauthn--1.4.sql webauthn--1.3--1.4.sql
 
 PG_CONFIG = pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
-all: webauthn--1.3.sql webauthn--1.2--1.3.sql
+all: webauthn--1.4.sql webauthn--1.3--1.4.sql
 
 SQL_SRC = \
   complain_header.sql \
@@ -58,14 +61,12 @@ SQL_SRC = \
   FUNCTIONS/verify_assertion.sql \
 	FUNCTIONS/generate_test.sql
 
-webauthn--1.3.sql: $(SQL_SRC)
+webauthn--1.4.sql: $(SQL_SRC)
 	cat $^ > $@
 
 SQL_SRC = \
   complain_header.sql \
-  FUNCTIONS/store_credential.sql \
-	FUNCTIONS/generate_test.sql \
-  1.2--1.3.sql
+  1.3--1.4.sql
 
-webauthn--1.2--1.3.sql: $(SQL_SRC)
+webauthn--1.3--1.4.sql: $(SQL_SRC)
 	cat $^ > $@

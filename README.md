@@ -40,15 +40,15 @@ For a full-stack demo on how to use this project, see the [🦄🐘uniphant] pro
 
 [pgcrypto] for the [digest()] and [gen_random_bytes()] functions.
 
-[pguecc] for the ECDSA cryptographic [ecdsa_verify()] function.
+[pg_ecdsa_verify] for the ECDSA cryptographic [ecdsa_verify()] function.
 
 [🧬🐘cbor] for the [cbor.to_jsonb()] function.
 
 [pgcrypto]: https://www.postgresql.org/docs/current/pgcrypto.html
 [digest()]: https://www.postgresql.org/docs/current/pgcrypto.html#id-1.11.7.34.6
 [gen_random_bytes()]: https://www.postgresql.org/docs/current/pgcrypto.html#id-1.11.7.34.10
-[pguecc]: https://github.com/ameensol/pg-ecdsa
-[ecdsa_verify()]: https://github.com/ameensol/pg-ecdsa#ecdsa_verifypublic_key-textbytea-input_data-bytea-signature-textbytea-hash_func-text-curve_name-text
+[pg_ecdsa_verify]: https://crates.io/crates/pg_ecdsa_verify
+[ecdsa_verify()]: https://github.com/joelonsql/pg_ecdsa_verify?tab=readme-ov-file#function-signature
 [🧬🐘cbor]: https://github.com/truthly/pg-cbor
 [cbor.to_jsonb()]: https://github.com/truthly/pg-cbor#to-jsonb
 
@@ -74,7 +74,7 @@ Use with:
 
     $ psql
     # CREATE EXTENSION IF NOT EXISTS webauthn CASCADE;
-    NOTICE:  installing required extension "pguecc"
+    NOTICE:  installing required extension "pg_ecdsa_verify"
     NOTICE:  installing required extension "pgcrypto"
     NOTICE:  installing required extension "cbor"
     CREATE EXTENSION;

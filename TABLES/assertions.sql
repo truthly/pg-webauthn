@@ -22,7 +22,7 @@ CONSTRAINT client_data_json_challenge CHECK (challenge = webauthn.base64url_deco
 CONSTRAINT user_handle_equal_or_null CHECK (user_handle = user_id),
 CONSTRAINT user_verified_or_not_required CHECK (user_verified OR webauthn.assertion_challenge_user_verification(challenge) <> 'required'),
 CONSTRAINT verified_before_timeout CHECK (verified_at < webauthn.assertion_challenge_expiration(challenge)),
-CONSTRAINT verified_signature CHECK (COALESCE(public.ecdsa_verify(
+CONSTRAINT verified_signature CHECK (COALESCE(ecdsa_verify.ecdsa_verify(
   public_key := webauthn.credential_public_key(credential_id),
   input_data := substring(authenticator_data,1,37) || public.digest(client_data_json,'sha256'),
   signature := webauthn.decode_asn1_der_signature(signature),

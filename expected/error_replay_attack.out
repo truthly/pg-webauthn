@@ -15,7 +15,7 @@
 --
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS webauthn CASCADE;
-NOTICE:  installing required extension "pguecc"
+NOTICE:  installing required extension "pg_ecdsa_verify"
 NOTICE:  installing required extension "pgcrypto"
 NOTICE:  installing required extension "cbor"
 SELECT jsonb_pretty(webauthn.init_credential(
