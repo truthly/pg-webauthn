@@ -10,7 +10,9 @@ DATA = \
 	webauthn--1.3--1.4.sql \
 	webauthn--1.4.sql \
 	webauthn--1.4--1.5.sql \
-	webauthn--1.5.sql
+	webauthn--1.5.sql \
+	webauthn--1.5--1.6.sql \
+	webauthn--1.6.sql
 
 REGRESS = ok \
 	ok_user_handle \
@@ -26,13 +28,13 @@ REGRESS = ok \
 	error_replay_attack \
 	error_hijack_attack
 
-EXTRA_CLEAN = webauthn--1.5.sql webauthn--1.4--1.5.sql
+EXTRA_CLEAN = webauthn--1.6.sql webauthn--1.5--1.6.sql
 
 PG_CONFIG = pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
-all: webauthn--1.5.sql webauthn--1.4--1.5.sql
+all: webauthn--1.6.sql webauthn--1.5--1.6.sql
 
 SQL_SRC = \
 	complain_header.sql \
@@ -63,12 +65,12 @@ SQL_SRC = \
 	FUNCTIONS/verify_assertion.sql \
 	FUNCTIONS/generate_test.sql
 
-webauthn--1.5.sql: $(SQL_SRC)
+webauthn--1.6.sql: $(SQL_SRC)
 	cat $^ > $@
 
 SQL_SRC = \
   complain_header.sql \
-  1.4--1.5.sql
+  1.5--1.6.sql
 
-webauthn--1.4--1.5.sql: $(SQL_SRC)
+webauthn--1.5--1.6.sql: $(SQL_SRC)
 	cat $^ > $@

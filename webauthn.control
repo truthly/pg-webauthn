@@ -1,5 +1,5 @@
 comment = 'WebAuth server'
-default_version = '1.5'
+default_version = '1.6'
 requires = 'pg_ecdsa_verify,pgcrypto,cbor'
 relocatable = false
 schema = webauthn
